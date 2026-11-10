@@ -19,6 +19,7 @@ import os
 import re
 import subprocess
 import sys
+import urllib.error
 import urllib.request
 from dataclasses import dataclass
 from pathlib import Path
@@ -103,6 +104,10 @@ def _open(url: str, opener: Opener):
         response = opener(request, timeout=TIMEOUT)
     except UpdateError:
         raise
+    except urllib.error.HTTPError as exc:
+        if exc.code == 404 and url == API_URL:
+            raise UpdateError('На GitHub пока нет опубликованных версий.') from exc
+        raise UpdateError(f'GitHub ответил ошибкой {exc.code}.') from exc
     except Exception as exc:  # noqa: BLE001 - offline, DNS, HTTP 4xx/5xx: all mean "not now"
         raise UpdateError(f'Не удалось связаться с GitHub: {exc}') from exc
     _check_url(response.geturl())

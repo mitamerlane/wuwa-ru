@@ -125,6 +125,14 @@ class UpdaterTests(unittest.TestCase):
         with self.assertRaises(updater.UpdateError):
             updater.latest_release(FakeWeb({}))
 
+    def test_repository_without_releases_says_so(self):
+        import urllib.error
+
+        def no_release(request, timeout=None):
+            raise urllib.error.HTTPError(request.full_url, 404, 'Not Found', {}, None)
+        with self.assertRaisesRegex(updater.UpdateError, 'нет опубликованных'):
+            updater.latest_release(no_release)
+
     # -- statement and download ---------------------------------------------------------------
 
     def test_download_verifies_signature_size_and_hash(self):
