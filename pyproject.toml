@@ -1,0 +1,20 @@
+[project]
+name = "wuwa-russian-manager"
+version = "0.2.0"
+description = "Offline-first Windows desktop application for WuWa Russian localization"
+requires-python = ">=3.12"
+license = {text = "GPL-3.0-or-later"}
+dependencies = ["cryptography==49.0.0"]
+
+[project.optional-dependencies]
+gui = ["PySide6==6.10.2"]
+build = ["PySide6==6.10.2", "pyinstaller>=6.10,<7"]
+
+[project.scripts]
+wuwa-russian = "wuwaru.__main__:main"
+wuwa-russian-editor = "wuwaru.gui:main"
+wuwa-russian-gui = "wuwaru.gui:main"
+
+[tool.setuptools.packages.find]
+include = ["wuwaru*"]
+exclude = ["tests*", "gui_tests*"]

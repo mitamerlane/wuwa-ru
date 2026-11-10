@@ -1,0 +1,1743 @@
+{
+  "schema_version": 1,
+  "observed_date": "2026-10-24",
+  "sources": {
+    "Arikatsu": {
+      "repository": "https://github.com/Arikatsu/WutheringWaves_Data",
+      "revision": "9218d612ad815e398e064e577e42aaf878899968",
+      "data_date": "2026-09-29T20:35:07Z",
+      "data_version": "game 3.7.0; resource 3.7.8; changelist 8975829",
+      "version_evidence": "README.md",
+      "branch": "3.7",
+      "license": null,
+      "files": [
+        {
+          "path": "Textmaps/en/Sneak.json",
+          "sha256": "bd098153dba9930d394ebc8213f37284ea370872e9d37326cc115e0c3f084771",
+          "size": 82
+        },
+        {
+          "path": "Textmaps/en/Sneak/Sneak.json",
+          "sha256": "bd098153dba9930d394ebc8213f37284ea370872e9d37326cc115e0c3f084771",
+          "size": 82
+        },
+        {
+          "path": "Textmaps/en/UiHotKot/HotKeyMap.json",
+          "sha256": "06851033fe40905ef48837a9661a953bcefe7aa8b5ade1a804304c6bd72a1895",
+          "size": 122
+        },
+        {
+          "path": "Textmaps/en/UiHotKot/HotKeyText.json",
+          "sha256": "051d4e4bef7b2a3a8e5ced8ebe30f77507a272aea734860cd043bca804345e47",
+          "size": 2952
+        },
+        {
+          "path": "Textmaps/en/accesspath/AccessPath.json",
+          "sha256": "ed2e386d9fea88057707e5350bcea4bf006793f57abd6871e58482cb6b69cde1",
+          "size": 4062
+        },
+        {
+          "path": "Textmaps/en/achievement/Achievement.json",
+          "sha256": "55e25dc4a7b7e4a66d05d1c7146cab3ec7749d7128d47cba15f37698a9490350",
+          "size": 9050
+        },
+        {
+          "path": "Textmaps/en/achievement/AchievementCategory.json",
+          "sha256": "a2185a4eb8d25998e195a22123ca566f267c7f17e36d009ac936f2e5d9ba5e5d",
+          "size": 242
+        },
+        {
+          "path": "Textmaps/en/achievement/AchievementGroup.json",
+          "sha256": "7fa9bec7dd785d2716f01f4b6ca4539f61879957bd0d793f511df7452174ef0e",
+          "size": 567
+        },
+        {
+          "path": "Textmaps/en/activity/Activity.json",
+          "sha256": "66d842d5f2a2af61a1500a528f8b6e7ed8d68bd75ba61f523d7918b86743df69",
+          "size": 162
+        },
+        {
+          "path": "Textmaps/en/activity/ActivityTrigger.json",
+          "sha256": "8143d6e8816643647a9c13b991605ad0b615003fe69c26e911e7db9cb7e6059b",
+          "size": 403
+        },
+        {
+          "path": "Textmaps/en/adventuretask/AdventureTask.json",
+          "sha256": "f10456aae1a0c6993bfc6249e987477eb415a336fb0d8ec3a18e5437b4e25110",
+          "size": 1428
+        },
+        {
+          "path": "Textmaps/en/adventuretask/AdventureTaskChapter.json",
+          "sha256": "e8378209b5bd7091ee9a0d783817177c4f1b39a0d65dde435c13961a46afc632",
+          "size": 202
+        },
+        {
+          "path": "Textmaps/en/advice/AdviceConjunction.json",
+          "sha256": "c5ef79ee0279e31855e3c36d853713ca9b4d89cff40fa05ef8674eea50834e23",
+          "size": 362
+        },
+        {
+          "path": "Textmaps/en/advice/AdviceParams.json",
+          "sha256": "06851033fe40905ef48837a9661a953bcefe7aa8b5ade1a804304c6bd72a1895",
+          "size": 122
+        },
+        {
+          "path": "Textmaps/en/advice/AdviceSentence.json",
+          "sha256": "4a7504ae53bb074a5d3d44cce18dc48def725db2ab57ce5322c606196455a481",
+          "size": 1223
+        },
+        {
+          "path": "Textmaps/en/advice/AdviceWord.json",
+          "sha256": "436b4575a5064bc34466d409d028c03b76479d60dd1b71300d6e2376b0715aff",
+          "size": 3403
+        },
+        {
+          "path": "Textmaps/en/advice/AdviceWordType.json",
+          "sha256": "9e77a152e5f72d75539d47ffe7e4f65c80373ea73043602a8eec06526ac40313",
+          "size": 282
+        },
+        {
+          "path": "Textmaps/en/area/Area.json",
+          "sha256": "e2472672f0d3980fc0169fdf066b5b1706dd16b8047b66ae0f69369ceb66ee37",
+          "size": 7150
+        },
+        {
+          "path": "Textmaps/en/areaquest/AreaQuestArea.json",
+          "sha256": "be5a51ac9f0bcad7e7fb047ec134d1584a58342e77c21bcf0da96ed9508a7c2d",
+          "size": 42
+        },
+        {
+          "path": "Textmaps/en/areaquest/AreaQuestScreen.json",
+          "sha256": "b5c018837d8bbd17f4d289ee58cda740f1a453b0d43d10673c96a9c588c29de8",
+          "size": 1633
+        },
+        {
+          "path": "Textmaps/en/bag/ItemMainType.json",
+          "sha256": "3ea196e739ea95a7aec01d6d538f1f92a61e584703f263f649e0d04e20b3f097",
+          "size": 300
+        },
+        {
+          "path": "Textmaps/en/bag/PackageCapacity.json",
+          "sha256": "e8378209b5bd7091ee9a0d783817177c4f1b39a0d65dde435c13961a46afc632",
+          "size": 202
+        },
+        {
+          "path": "Textmaps/en/bag/PackageSort.json",
+          "sha256": "66d842d5f2a2af61a1500a528f8b6e7ed8d68bd75ba61f523d7918b86743df69",
+          "size": 162
+        },
+        {
+          "path": "Textmaps/en/battlepass/BattlePassTask.json",
+          "sha256": "9f0c10bc404f4484ff38fad9495001909c2a0c29962597079041f02d4c75cff6",
+          "size": 813
+        },
+        {
+          "path": "Textmaps/en/calabash/CalabashDevelopCondition.json",
+          "sha256": "27a949524e3abe93bc68bafea21cb8421f93d0cbc3086f188ea146813e8b3927",
+          "size": 288
+        },
+        {
+          "path": "Textmaps/en/calabash/CalabashDevelopReward.json",
+          "sha256": "ef6c1866254ba32c64d8473353cecb9b2fbf2fbb0dcd28579fc28a50b1bd77b6",
+          "size": 2549
+        },
+        {
+          "path": "Textmaps/en/calabash/CalabashLevel.json",
+          "sha256": "8135bf4f434cdaca2b5d472ab5f1840219f35438d3e4a82e150d0c4c488890aa",
+          "size": 2833
+        },
+        {
+          "path": "Textmaps/en/cgVideo/VideoCaption.json",
+          "sha256": "cafb4e5c104ba7e63acde2f7e80d76bbbd695f25c676d4453a5e21dfc0eafcb5",
+          "size": 5339
+        },
+        {
+          "path": "Textmaps/en/chat/Chat.json",
+          "sha256": "bd098153dba9930d394ebc8213f37284ea370872e9d37326cc115e0c3f084771",
+          "size": 82
+        },
+        {
+          "path": "Textmaps/en/chat/ChatExpression.json",
+          "sha256": "dab972751e1b17f20bb87a68049416520701338ff6ec52b05b005714aae38c7e",
+          "size": 977
+        },
+        {
+          "path": "Textmaps/en/chat/QuickChat.json",
+          "sha256": "ad24ee625825e37bbde2f1e6930b6c40679792975bba807a2da456a0865fc118",
+          "size": 322
+        },
+        {
+          "path": "Textmaps/en/combo_teaching/ComboTeaching.json",
+          "sha256": "6cb23c6c3becfa64d3ea6b4e2aecd5abe64dc13f976edfa4e3c350e9d0b96b98",
+          "size": 4850
+        },
+        {
+          "path": "Textmaps/en/common_param/CommonParam.json",
+          "sha256": "be5a51ac9f0bcad7e7fb047ec134d1584a58342e77c21bcf0da96ed9508a7c2d",
+          "size": 42
+        },
+        {
+          "path": "Textmaps/en/compose/SynthesisFormula.json",
+          "sha256": "dbe2753152208e5f860f2c7de7fa4b174ad910c9d6f5652ba996ea0140ae7d0f",
+          "size": 23835
+        },
+        {
+          "path": "Textmaps/en/compose/SynthesisLevel.json",
+          "sha256": "66d842d5f2a2af61a1500a528f8b6e7ed8d68bd75ba61f523d7918b86743df69",
+          "size": 162
+        },
+        {
+          "path": "Textmaps/en/condition/Condition.json",
+          "sha256": "d4f66173d5ddb77289e7eb52a91e6739cc80429e85f2348c47c8879107117ea9",
+          "size": 42975
+        },
+        {
+          "path": "Textmaps/en/condition/ConditionGroup.json",
+          "sha256": "5597fed9fc7d3c51722b8840196a34a970f6f602f9c5ff180612b5b041abdf9c",
+          "size": 14972
+        },
+        {
+          "path": "Textmaps/en/confirmbox/ConfirmBox.json",
+          "sha256": "cb109f3e4d6c166e6585326eaf029273a3f20024e6db6e14cdbab4b28d9ec3a4",
+          "size": 18339
+        },
+        {
+          "path": "Textmaps/en/cook/CookFixTool.json",
+          "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "size": 2
+        },
+        {
+          "path": "Textmaps/en/cook/CookFormula.json",
+          "sha256": "edebb6982ec3437e73350313d355eb67120adea6b1a191f78d830334d7dff606",
+          "size": 5957
+        },
+        {
+          "path": "Textmaps/en/cook/CookLevel.json",
+          "sha256": "8143d6e8816643647a9c13b991605ad0b615003fe69c26e911e7db9cb7e6059b",
+          "size": 403
+        },
+        {
+          "path": "Textmaps/en/cook/CookProcessMsg.json",
+          "sha256": "9f0c10bc404f4484ff38fad9495001909c2a0c29962597079041f02d4c75cff6",
+          "size": 813
+        },
+        {
+          "path": "Textmaps/en/cook/CookProcessed.json",
+          "sha256": "4f45a246748aceea3d4c1fd14c81678a6953829e448f212cc131384d9fda906b",
+          "size": 256
+        },
+        {
+          "path": "Textmaps/en/cook/SpecialCook.json",
+          "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "size": 2
+        },
+        {
+          "path": "Textmaps/en/country/Country.json",
+          "sha256": "151976a90f07dc929c9b64d4d92b4bbd59741e6b024a2cf51d1ca85746d005f8",
+          "size": 834
+        },
+        {
+          "path": "Textmaps/en/country/Influence.json",
+          "sha256": "1cd796e86fa8722f0a7a7ec93dcd60476936d99b3e717094944a5b98c784031a",
+          "size": 2369
+        },
+        {
+          "path": "Textmaps/en/custom_sequence/CustomSequence.json",
+          "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "size": 2
+        },
+        {
+          "path": "Textmaps/en/cycle_tower/CycleTowerBuff.json",
+          "sha256": "b38478287ed978cdde8fe85011549cdb70d78ae4e0dc8e7d740de09b4a4174c1",
+          "size": 1387
+        },
+        {
+          "path": "Textmaps/en/cycle_tower/CycleTowerChallengeConfig.json",
+          "sha256": "e75a6972d05c28b88383b8e80338a225816ea89a89daa9b569590b80851443c1",
+          "size": 1273
+        },
+        {
+          "path": "Textmaps/en/cycle_tower/CycleTowerDifficulty.json",
+          "sha256": "fbecfa1578ebdca9415f63b9b66eedc282dbf15783b8cd98f8dad09eb16e153a",
+          "size": 1130
+        },
+        {
+          "path": "Textmaps/en/detection/DetectionText.json",
+          "sha256": "7f5c9187e467ed0e309aacf1354121d3e6ee168762b71368a36e98edcf620364",
+          "size": 910
+        },
+        {
+          "path": "Textmaps/en/detection/DungeonDetection.json",
+          "sha256": "74ec8458747ea05ff6e91dfd4c270860eb5924715cf8c1facc7bc68d871d7a7c",
+          "size": 1266
+        },
+        {
+          "path": "Textmaps/en/detection/GuideData.json",
+          "sha256": "8143d6e8816643647a9c13b991605ad0b615003fe69c26e911e7db9cb7e6059b",
+          "size": 403
+        },
+        {
+          "path": "Textmaps/en/detection/MonsterDetection.json",
+          "sha256": "733c6cea9d87efb843f184733d9a24d87fe2159cea0705dcc30e35431ec6e571",
+          "size": 18609
+        },
+        {
+          "path": "Textmaps/en/detection/SilentAreaDetection.json",
+          "sha256": "22edb7cb7bf2eaff42d1228bee5d8ab285581dc737c4e7c51b4152667301840d",
+          "size": 2599
+        },
+        {
+          "path": "Textmaps/en/dragon_ball/DragonPool.json",
+          "sha256": "be5a51ac9f0bcad7e7fb047ec134d1584a58342e77c21bcf0da96ed9508a7c2d",
+          "size": 42
+        },
+        {
+          "path": "Textmaps/en/element_info/ElementInfo.json",
+          "sha256": "3b8919854b7d835810d3d4a6f7a4c7e4217c922fd5ebfb05dfa0c81552f71540",
+          "size": 827
+        },
+        {
+          "path": "Textmaps/en/element_info/ElementalReaction.json",
+          "sha256": "60d55161c652659f0606c6ee13ec25be2ca5693f284830a4044e5ed2fef40bd8",
+          "size": 5903
+        },
+        {
+          "path": "Textmaps/en/error_code/ErrorCode.json",
+          "sha256": "beb9670771924cf93830d7d22396b44d00dbb2e2a6404e664f3f5152e0c2e986",
+          "size": 49861
+        },
+        {
+          "path": "Textmaps/en/explore_progress/ExploreProgress.json",
+          "sha256": "e39bfd7605b1ecfa8afc342d75c9e4a374a20bfbb7e8ff6abaffb6e94e933626",
+          "size": 1613
+        },
+        {
+          "path": "Textmaps/en/explore_skill/ExploreTools.json",
+          "sha256": "a7a1bab2ba628fd502d401b89dc33128c6c5282950243a6e7011d35bbf4bfcb7",
+          "size": 695
+        },
+        {
+          "path": "Textmaps/en/favor/FavorBehavior.json",
+          "sha256": "a784c971fc4773c10f8629e5c467481a45316520e6100a450d3e5c01ed9c5f5e",
+          "size": 1305
+        },
+        {
+          "path": "Textmaps/en/favor/FavorGoods.json",
+          "sha256": "ecf18e2e2fa473dfe399e5f1ec06708448af5f99c9074fdb5e4fb5cca2beac4c",
+          "size": 3971
+        },
+        {
+          "path": "Textmaps/en/favor/FavorRoleInfo.json",
+          "sha256": "cc74d8bcd16fe817fa4361786f427c1028c18ae421baeea32ccac8035885b112",
+          "size": 9583
+        },
+        {
+          "path": "Textmaps/en/favor/FavorStory.json",
+          "sha256": "edcb452553709194b63934ba62cff915cf9f6a08cb0e9179c3d5c90a57ce6cc6",
+          "size": 6614
+        },
+        {
+          "path": "Textmaps/en/favor/FavorWord.json",
+          "sha256": "b0b216272a8d527b1b385611dac8cb2b919f6b7e4da5edfaebaf95b9db277daf",
+          "size": 60827
+        },
+        {
+          "path": "Textmaps/en/flow/Flow.json",
+          "sha256": "77c7478d716e82d469b5bed73507c3513b253d5345e72313a9a41a81ba69a677",
+          "size": 44
+        },
+        {
+          "path": "Textmaps/en/flow_text/FlowText.json",
+          "sha256": "834f58bc12ebc67522afe75bc9258fb3dd79adafd1c8b19bbba23c0ca23b06be",
+          "size": 608
+        },
+        {
+          "path": "Textmaps/en/forge/ForgeFormula.json",
+          "sha256": "ea220b53a1abfdcf752f2ef1785c2b10b13b06f91c2d7e1b72de70935001098d",
+          "size": 1297
+        },
+        {
+          "path": "Textmaps/en/formation/FightFormation.json",
+          "sha256": "be5a51ac9f0bcad7e7fb047ec134d1584a58342e77c21bcf0da96ed9508a7c2d",
+          "size": 42
+        },
+        {
+          "path": "Textmaps/en/friend/FriendDynamicText.json",
+          "sha256": "834f58bc12ebc67522afe75bc9258fb3dd79adafd1c8b19bbba23c0ca23b06be",
+          "size": 608
+        },
+        {
+          "path": "Textmaps/en/function/FunctionCondition.json",
+          "sha256": "6007200d9f1b713a6c79dc63a8f71766e613a566dafd71c180d46ae51533cc9f",
+          "size": 4489
+        },
+        {
+          "path": "Textmaps/en/function/FunctionMenu.json",
+          "sha256": "7c450a071b0f632c60d61ec9cc20bd67fe0b40ca15b6671fd33b20710aad1a91",
+          "size": 1109
+        },
+        {
+          "path": "Textmaps/en/gacha/GachaViewInfo.json",
+          "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "size": 2
+        },
+        {
+          "path": "Textmaps/en/generic_tips/GeneralTipsTypes.json",
+          "sha256": "82022f68158111727bf34541bf283ca0b92b1fce566a773bcb81b4824e39ec62",
+          "size": 509
+        },
+        {
+          "path": "Textmaps/en/generic_tips/GenericPrompt.json",
+          "sha256": "6b382e633a5cc4bcca721ef3802e194e6a9f0fda749c2cb87fdc35c6a5fde922",
+          "size": 11069
+        },
+        {
+          "path": "Textmaps/en/generic_tips/GenericPromptTypes.json",
+          "sha256": "ad4bb501ee91fdc62f41904865b6301c9a193c454cb7d9568ccc1b6470ec4eff",
+          "size": 1067
+        },
+        {
+          "path": "Textmaps/en/gm/GM.json",
+          "sha256": "0e62c26466424db00f89e733b6bb36aa1583e23dbce565ccc702babbf0bf317a",
+          "size": 982
+        },
+        {
+          "path": "Textmaps/en/gm/GmOrder.json",
+          "sha256": "52c4d25772bb5add3b9c08c04b54a117c032f092ed56f9695d777c49a03aae0a",
+          "size": 4556
+        },
+        {
+          "path": "Textmaps/en/guide_new/GuideFocusNew.json",
+          "sha256": "ab1cd035cfedc17c188386a6e51577e5e72fef3e02aa80d35e8faec0942c19d6",
+          "size": 14575
+        },
+        {
+          "path": "Textmaps/en/guide_new/GuideTips.json",
+          "sha256": "190f0bb724586824536b2a1dba9cefd5b8f7403e12680e385b50be5171652a39",
+          "size": 5756
+        },
+        {
+          "path": "Textmaps/en/guide_new/GuideTutorial.json",
+          "sha256": "1f3960c5f305708ba57c81cf96caac86571380b143d1a7e1384425553ed1b035",
+          "size": 7084
+        },
+        {
+          "path": "Textmaps/en/guide_new/GuideTutorialPage.json",
+          "sha256": "449fef4193fcccf7a41f97be11242e3abff7d20b5445c666c496b3362a67959d",
+          "size": 31187
+        },
+        {
+          "path": "Textmaps/en/handbook/AnimalHandBook.json",
+          "sha256": "d2f4ee4d0c72d5c04ff7fe1d02590c1ccd5e5882d3eb2858b387c4f46695ef95",
+          "size": 5248
+        },
+        {
+          "path": "Textmaps/en/handbook/ChipHandBook.json",
+          "sha256": "ec379a7592410c87518b21aec6ae9d0f3321afd3a3e4cd043164682c64d58cab",
+          "size": 693
+        },
+        {
+          "path": "Textmaps/en/handbook/ChipType.json",
+          "sha256": "06851033fe40905ef48837a9661a953bcefe7aa8b5ade1a804304c6bd72a1895",
+          "size": 122
+        },
+        {
+          "path": "Textmaps/en/handbook/GeographyHandBook.json",
+          "sha256": "5a151b6cad5d86c995cbc87de165e64b4b8ae6354097451f27b8262771a7e940",
+          "size": 1602
+        },
+        {
+          "path": "Textmaps/en/handbook/GeographyType.json",
+          "sha256": "d83962435e7b05b2cec5e524954bcac426a17b9592b32ef51791e10f01f5779d",
+          "size": 51
+        },
+        {
+          "path": "Textmaps/en/handbook/ItemHandBook.json",
+          "sha256": "8a3c84e2197cf08e77afb198ee70fb1de565e13af7f114cc0aff25f618080bc3",
+          "size": 13065
+        },
+        {
+          "path": "Textmaps/en/handbook/ItemHandBookType.json",
+          "sha256": "66d842d5f2a2af61a1500a528f8b6e7ed8d68bd75ba61f523d7918b86743df69",
+          "size": 162
+        },
+        {
+          "path": "Textmaps/en/handbook/MonsterHandBook.json",
+          "sha256": "4945a010af87de587cb1a4a3b920e265f00b7c7d24174d5cf2c8d81836542ac9",
+          "size": 20359
+        },
+        {
+          "path": "Textmaps/en/handbook/MonsterHandBookType.json",
+          "sha256": "9e77a152e5f72d75539d47ffe7e4f65c80373ea73043602a8eec06526ac40313",
+          "size": 282
+        },
+        {
+          "path": "Textmaps/en/handbook/PhantomHandBook.json",
+          "sha256": "4bc9b436e4717d3e94052d0b93ed23c446e03058585a87662ce73f8df5640f56",
+          "size": 17343
+        },
+        {
+          "path": "Textmaps/en/handbook/PhotographHandBook.json",
+          "sha256": "73c9738c1fed3d44cc39a62c45347a6ecaf99d341d2f601466500ba572505138",
+          "size": 485
+        },
+        {
+          "path": "Textmaps/en/handbook/PlotType.json",
+          "sha256": "a2185a4eb8d25998e195a22123ca566f267c7f17e36d009ac936f2e5d9ba5e5d",
+          "size": 242
+        },
+        {
+          "path": "Textmaps/en/handbook_entrance/HandBookEntrance.json",
+          "sha256": "a3d1cd015d2de731e7e7045fc0cdcd98dd56401adfa8f750a94063352283a8da",
+          "size": 337
+        },
+        {
+          "path": "Textmaps/en/help/HelpText.json",
+          "sha256": "8f43a0c5157dbbea8729569c5c02218f806f967dc11660e72694597ae88080a6",
+          "size": 4137
+        },
+        {
+          "path": "Textmaps/en/hot_patch/HotPatchText.json",
+          "sha256": "a51b15049b5d2b580a685e10f61f7fe7a312e7074cba7e3219cb9f89c76ee1e3",
+          "size": 20735
+        },
+        {
+          "path": "Textmaps/en/influence/Country.json",
+          "sha256": "151976a90f07dc929c9b64d4d92b4bbd59741e6b024a2cf51d1ca85746d005f8",
+          "size": 834
+        },
+        {
+          "path": "Textmaps/en/influence/Influence.json",
+          "sha256": "1cd796e86fa8722f0a7a7ec93dcd60476936d99b3e717094944a5b98c784031a",
+          "size": 2369
+        },
+        {
+          "path": "Textmaps/en/infodisplay/InfoDisplay.json",
+          "sha256": "20ddd51bd343509476b7d7dcd40a79c739c32c259a8d68b01eeac324f3af3e86",
+          "size": 76072
+        },
+        {
+          "path": "Textmaps/en/instance_dungeon/InstanceDungeon.json",
+          "sha256": "cff6fee6788980bdf424a9cace57b4f1413f60ccacc61b8eca345d497171b191",
+          "size": 52162
+        },
+        {
+          "path": "Textmaps/en/instance_dungeon/InstanceDungeonTitle.json",
+          "sha256": "9f0c10bc404f4484ff38fad9495001909c2a0c29962597079041f02d4c75cff6",
+          "size": 813
+        },
+        {
+          "path": "Textmaps/en/instance_dungeon_entrance/InstanceDungeonEntrance.json",
+          "sha256": "a780aa273c747c215f99f2cf23c8471ec964c4a36c1739873d7272e7ad059001",
+          "size": 3386
+        },
+        {
+          "path": "Textmaps/en/instance_dungeon_step/DungeonStep.json",
+          "sha256": "1abee947fd03c2e50035be465050440604c3e805ee0a9d49ea24f8904dfbf43a",
+          "size": 3820
+        },
+        {
+          "path": "Textmaps/en/item/ItemInfo.json",
+          "sha256": "5d545ac8e3cc12b72126201780a43e1f4f40671d5e3e5a9e0bce5fa44f679ec3",
+          "size": 179905
+        },
+        {
+          "path": "Textmaps/en/item/ItemShowType.json",
+          "sha256": "8749c91ac6cd0d427e23145ccb7c3c274a8fe6c0e08c75f7c860776806e8bf04",
+          "size": 2265
+        },
+        {
+          "path": "Textmaps/en/item/PreviewItem.json",
+          "sha256": "834f58bc12ebc67522afe75bc9258fb3dd79adafd1c8b19bbba23c0ca23b06be",
+          "size": 608
+        },
+        {
+          "path": "Textmaps/en/item/QualityInfo.json",
+          "sha256": "e8378209b5bd7091ee9a0d783817177c4f1b39a0d65dde435c13961a46afc632",
+          "size": 202
+        },
+        {
+          "path": "Textmaps/en/loadingtips/LoadingTipsText.json",
+          "sha256": "4b35365f2568a5b24936baa149d109cfab1e6e2e1a4e42c0a8624dc07eda7927",
+          "size": 1917
+        },
+        {
+          "path": "Textmaps/en/mail/Mail.json",
+          "sha256": "4a7504ae53bb074a5d3d44cce18dc48def725db2ab57ce5322c606196455a481",
+          "size": 1223
+        },
+        {
+          "path": "Textmaps/en/mail/MailCommonText.json",
+          "sha256": "b81febcac72dee810a911d69d5308f63650364dbbe9f1edce3cef1042a9b4ce7",
+          "size": 1197
+        },
+        {
+          "path": "Textmaps/en/mail/MailFilter.json",
+          "sha256": "06851033fe40905ef48837a9661a953bcefe7aa8b5ade1a804304c6bd72a1895",
+          "size": 122
+        },
+        {
+          "path": "Textmaps/en/mail/MailTo.json",
+          "sha256": "be5a51ac9f0bcad7e7fb047ec134d1584a58342e77c21bcf0da96ed9508a7c2d",
+          "size": 42
+        },
+        {
+          "path": "Textmaps/en/map/AkiMap.json",
+          "sha256": "c5ef79ee0279e31855e3c36d853713ca9b4d89cff40fa05ef8674eea50834e23",
+          "size": 362
+        },
+        {
+          "path": "Textmaps/en/map/Map.json",
+          "sha256": "d9ce69d8a3ca183c617da346e3a04210689ae4bf7507b18cc93fdc23480bc2e8",
+          "size": 380
+        },
+        {
+          "path": "Textmaps/en/map_mark/MapMark.json",
+          "sha256": "4b94b085438f3fc6b8d03e5d240dab41ea9be3d4dfa3f848d8f0041ffaba8648",
+          "size": 54258
+        },
+        {
+          "path": "Textmaps/en/mapnote/MapNote.json",
+          "sha256": "be5a51ac9f0bcad7e7fb047ec134d1584a58342e77c21bcf0da96ed9508a7c2d",
+          "size": 42
+        },
+        {
+          "path": "Textmaps/en/mapping/Mapping.json",
+          "sha256": "0141593693d22d25c95a02ccc079c3615c8097e20112c6005a8d63b3a77b6b73",
+          "size": 661
+        },
+        {
+          "path": "Textmaps/en/menu/ImageDefaultConfig.json",
+          "sha256": "28591c4ff5c096a4acc708976a75d2d2baf3a4b298fd669863894194ff6bbd72",
+          "size": 86
+        },
+        {
+          "path": "Textmaps/en/menu/MainType.json",
+          "sha256": "00d0ad508350fa67cc8b554728d7e370357ba8226dae5f38f3a2771ada3aab4d",
+          "size": 232
+        },
+        {
+          "path": "Textmaps/en/menu/MenuConfig.json",
+          "sha256": "d1d2d309c7e4c55e51cc8a4410710e2bba49a82ca69c5b69508763b2b7afcf26",
+          "size": 13163
+        },
+        {
+          "path": "Textmaps/en/monsterDisplay/MonsterDisplay.json",
+          "sha256": "66d842d5f2a2af61a1500a528f8b6e7ed8d68bd75ba61f523d7918b86743df69",
+          "size": 162
+        },
+        {
+          "path": "Textmaps/en/monster_Info/MonsterInfo.json",
+          "sha256": "624eb06922eea77fbe92ba23b0c5fd5d25bf53bf0645e62ea0ae762acd59dfa6",
+          "size": 33053
+        },
+        {
+          "path": "Textmaps/en/monster_Info/MonsterPerch.json",
+          "sha256": "ac71e537461a55186fe95a519ad8f27d597ca5f0e98c9a33193c0a4613311275",
+          "size": 728
+        },
+        {
+          "path": "Textmaps/en/monster_Info/MonsterRarity.json",
+          "sha256": "ab587aad7cadd049df7257ac3caeae1d7827e99572b7c45536e6bc037e6ff51d",
+          "size": 215
+        },
+        {
+          "path": "Textmaps/en/motion/Motion.json",
+          "sha256": "a597db0c5a551f89e347bdc99556206f7690bf62090a40909c1cf8408d42cf17",
+          "size": 772
+        },
+        {
+          "path": "Textmaps/en/multi_text/MultiText.json",
+          "sha256": "b8871035a7a3c9c8e0ca2d6884447b363e2c68e6e41cc6f1274ba655dd62fcf2",
+          "size": 51150572
+        },
+        {
+          "path": "Textmaps/en/multi_text_1sthalf/MultiText.json",
+          "sha256": "da6b2ca3cf540a764f39a81853f9f7439e2d289f07545b59b59f446648dcc0a2",
+          "size": 343340
+        },
+        {
+          "path": "Textmaps/en/multi_text_2ndhalf/MultiText.json",
+          "sha256": "670a119e9dff68bee32ba592bc51c3fdffc4544c8148938bfeec1de8621ae453",
+          "size": 109197
+        },
+        {
+          "path": "Textmaps/en/npc_headinfo/NpcHeadInfo.json",
+          "sha256": "0b80c08a834decafecff773d0d385701785d18a3bc68107ea8ece95c135a4260",
+          "size": 854
+        },
+        {
+          "path": "Textmaps/en/occupation/OccupationConfig.json",
+          "sha256": "df2558be417e906e222e8bffa1d765d3ca3d927e925c82d3e9696226e6d2658a",
+          "size": 10575
+        },
+        {
+          "path": "Textmaps/en/once_tower_challenge/TowerChallengeBuff.json",
+          "sha256": "e1c8d330e17ff40f43278272dea42591fcba2ed61e2423433445b64c7da8e0ba",
+          "size": 777
+        },
+        {
+          "path": "Textmaps/en/once_tower_challenge/TowerChallengeConfig.json",
+          "sha256": "03aee0616b60c4b4f050c441d31775712f6f2274852ea7aedf38080aee495960",
+          "size": 5274
+        },
+        {
+          "path": "Textmaps/en/once_tower_challenge/TowerChallengeTypeInfo.json",
+          "sha256": "66d842d5f2a2af61a1500a528f8b6e7ed8d68bd75ba61f523d7918b86743df69",
+          "size": 162
+        },
+        {
+          "path": "Textmaps/en/once_tower_challenge/TowerGroupInfo.json",
+          "sha256": "793b0a4c2874013a71977fdcfc2c8e7586d642b52d38909d149baa978c9e3bdb",
+          "size": 775
+        },
+        {
+          "path": "Textmaps/en/parkourchallenge/ParkourChallenge.json",
+          "sha256": "06851033fe40905ef48837a9661a953bcefe7aa8b5ade1a804304c6bd72a1895",
+          "size": 122
+        },
+        {
+          "path": "Textmaps/en/payshop/PayShop.json",
+          "sha256": "af68a4302ceb53c2a367966f80f7e184752fbde175452d15b00d95468548d2c6",
+          "size": 259
+        },
+        {
+          "path": "Textmaps/en/payshop/PayShopCondition.json",
+          "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "size": 2
+        },
+        {
+          "path": "Textmaps/en/payshop/PayShopGoods.json",
+          "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "size": 2
+        },
+        {
+          "path": "Textmaps/en/payshop/PayShopTab.json",
+          "sha256": "b35c7c489a9f2ec662f7bb8b03f2b3cba703e275b6d94476d561ac18d1a3475c",
+          "size": 293
+        },
+        {
+          "path": "Textmaps/en/personal/PersonalTips.json",
+          "sha256": "73c9738c1fed3d44cc39a62c45347a6ecaf99d341d2f601466500ba572505138",
+          "size": 485
+        },
+        {
+          "path": "Textmaps/en/personal_card/BackgroundCard.json",
+          "sha256": "32ac5cfe2ce826b873ad9a1a067eceb6b57dd3cd91ae29ec387846cf95f6fd08",
+          "size": 1018
+        },
+        {
+          "path": "Textmaps/en/phantom/PhantomFetter.json",
+          "sha256": "864429b6cc601766a620b529e3a4cdd85a12ade45058f96a4e0241b3ee71f4fe",
+          "size": 8376
+        },
+        {
+          "path": "Textmaps/en/phantom/PhantomItem.json",
+          "sha256": "7ac119c50c9e756e41cc022acb285a2b2411c4677eba538cf4a92dc9d6ecc39e",
+          "size": 38138
+        },
+        {
+          "path": "Textmaps/en/phantom/PhantomSkill.json",
+          "sha256": "d62a9a85760f7ad9f9b57a369da723f6313c955037bf7928036ac9d1f766ae43",
+          "size": 167674
+        },
+        {
+          "path": "Textmaps/en/phantom/PhantomSkillType.json",
+          "sha256": "28591c4ff5c096a4acc708976a75d2d2baf3a4b298fd669863894194ff6bbd72",
+          "size": 86
+        },
+        {
+          "path": "Textmaps/en/photograph/PhotoMontage.json",
+          "sha256": "834f58bc12ebc67522afe75bc9258fb3dd79adafd1c8b19bbba23c0ca23b06be",
+          "size": 608
+        },
+        {
+          "path": "Textmaps/en/photograph/PhotoSetup.json",
+          "sha256": "aab0cfb9d3461cd6ea7a3ef44cb66aa4af7387ae0d99e3f87ed6617ee783fbcd",
+          "size": 767
+        },
+        {
+          "path": "Textmaps/en/property/PropertyIndex.json",
+          "sha256": "077930c672306ed9dfe595296f8221754c8285c2716a12185e27f443242e947c",
+          "size": 15176
+        },
+        {
+          "path": "Textmaps/en/quest/Quest.json",
+          "sha256": "7d720fb20df62226cbcddcf1e9059d9a5d06e5fa0e47411883f5e3e7dd967d5f",
+          "size": 7202
+        },
+        {
+          "path": "Textmaps/en/quest_chapter/QuestChapter.json",
+          "sha256": "35d687de692d6c1a8db37d69680ae9a0313db8267df11ab510a7e466e1426ccc",
+          "size": 2343
+        },
+        {
+          "path": "Textmaps/en/quest_step/QuestStep.json",
+          "sha256": "52b60a0144e875edb6e78080a37346cf336ba7c3d1e7948bb7b7d442f3df83d2",
+          "size": 1100
+        },
+        {
+          "path": "Textmaps/en/questtype/QuestType.json",
+          "sha256": "c6fd8773fa860b3823fc14f87529e2bcc259090b8f4683928b1c43055678f7a6",
+          "size": 611
+        },
+        {
+          "path": "Textmaps/en/report/BanInfo.json",
+          "sha256": "7fa9bec7dd785d2716f01f4b6ca4539f61879957bd0d793f511df7452174ef0e",
+          "size": 567
+        },
+        {
+          "path": "Textmaps/en/report/ReportPlayerInfo.json",
+          "sha256": "e8378209b5bd7091ee9a0d783817177c4f1b39a0d65dde435c13961a46afc632",
+          "size": 202
+        },
+        {
+          "path": "Textmaps/en/resonate_chain/ResonantChain.json",
+          "sha256": "e8d027b23f5344121b5f8e20a2dd07c6526878c70e119e8e45edfcdfbd1c597a",
+          "size": 51602
+        },
+        {
+          "path": "Textmaps/en/revive/Revive.json",
+          "sha256": "949aac6c6dab77148b8770157422984bd3070f1c73fd7cfcc3534b7d077db9ea",
+          "size": 1613
+        },
+        {
+          "path": "Textmaps/en/role/RoleInfo.json",
+          "sha256": "9c996e8d8518936aaa7efb96798a525ecf1b8316e76719221f44446be530fdce",
+          "size": 12219
+        },
+        {
+          "path": "Textmaps/en/role/RoleQualityInfo.json",
+          "sha256": "b0217c5f5357ef37700ee6805cf391b317d445202494f4030d2443ef55773778",
+          "size": 123
+        },
+        {
+          "path": "Textmaps/en/roleDescription/RoleDescription.json",
+          "sha256": "81e7756aefbdd47d3288fec30308e4f321f407aa4fb10b0854533f2e13569c3f",
+          "size": 1011
+        },
+        {
+          "path": "Textmaps/en/roleInfluence/RoleInfluence.json",
+          "sha256": "779ef0eac9cb3c80401997aca89dc2c6c5a3678e750a550ed769ce75b138d91f",
+          "size": 146
+        },
+        {
+          "path": "Textmaps/en/roleQuest/RoleQuest.json",
+          "sha256": "9e77a152e5f72d75539d47ffe7e4f65c80373ea73043602a8eec06526ac40313",
+          "size": 282
+        },
+        {
+          "path": "Textmaps/en/role_reson/RoleResonance.json",
+          "sha256": "5e3888c74b59d9ae00347802e7465a542cdd651157a9a7b75be19c2cdb1d65e7",
+          "size": 17024
+        },
+        {
+          "path": "Textmaps/en/role_reson/RoleResonanceGrouth.json",
+          "sha256": "4288e7eae5384bc0aa7af6da9d0f4e873bfe20eb30e24f856550e93a6c09b908",
+          "size": 11486
+        },
+        {
+          "path": "Textmaps/en/role_training_degree/RoleTrainingDegree.json",
+          "sha256": "88a4ca35a492aced34f06b94b3dcf02b23c5c4235c14bbaca76a8aa9bf51351a",
+          "size": 4094
+        },
+        {
+          "path": "Textmaps/en/scenegameplay/SceneGameplay.json",
+          "sha256": "66d842d5f2a2af61a1500a528f8b6e7ed8d68bd75ba61f523d7918b86743df69",
+          "size": 162
+        },
+        {
+          "path": "Textmaps/en/scenestep/SceneStepConfig.json",
+          "sha256": "eb652de1fa378fe114911759962c5b3e79d88f95c4697a05556d5cbf1c6ba59a",
+          "size": 11360
+        },
+        {
+          "path": "Textmaps/en/shop/ShopBankInfo.json",
+          "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "size": 2
+        },
+        {
+          "path": "Textmaps/en/shop/ShopFixed.json",
+          "sha256": "ee555343e75d42911cbd99d5197527911d13315a21bd0efc812440ccce2dcd27",
+          "size": 10394
+        },
+        {
+          "path": "Textmaps/en/shop/ShopInfo.json",
+          "sha256": "c02a7e95f46d5146451e932281a4edcf278323ba11adadbe26ce01e6885d8cd2",
+          "size": 585
+        },
+        {
+          "path": "Textmaps/en/skill/Skill.json",
+          "sha256": "43006bec96916bb19b8c835a5bf659e370640e935adfe908b7f04b595fe7cda7",
+          "size": 12017
+        },
+        {
+          "path": "Textmaps/en/skill/SkillDescription.json",
+          "sha256": "226f924d5f0fa911e610244bb89ada9c29a627a604f0bb832ece7d8f1c708b4a",
+          "size": 24380
+        },
+        {
+          "path": "Textmaps/en/skill/SkillLevel.json",
+          "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "size": 2
+        },
+        {
+          "path": "Textmaps/en/skill/SkillType.json",
+          "sha256": "26145bd5473c2062b886b363c7b1541645710b3092a6c07c41d5caeadeef0b9a",
+          "size": 423
+        },
+        {
+          "path": "Textmaps/en/skillTree/RoleSkillTreeDesc.json",
+          "sha256": "b38478287ed978cdde8fe85011549cdb70d78ae4e0dc8e7d740de09b4a4174c1",
+          "size": 1387
+        },
+        {
+          "path": "Textmaps/en/skillTree/RoleSkillTreeInfo.json",
+          "sha256": "d1afc2e58d7f41e56e917100da42fc4593daee4cae157bd3665f8ee1e955a017",
+          "size": 1698
+        },
+        {
+          "path": "Textmaps/en/skillTree/SkillCondition.json",
+          "sha256": "dd37446960299c938e511826289805992e2a4806ff98f48e0dc45befa3ca30ee",
+          "size": 487
+        },
+        {
+          "path": "Textmaps/en/skillTree/SkillInput.json",
+          "sha256": "979c217a6dde6171823899b1eeb1e27870934ff6cb0e612a06fca9906c79a0a2",
+          "size": 5742
+        },
+        {
+          "path": "Textmaps/en/skillTree/SkillTree.json",
+          "sha256": "650919502fd74c59d0f663a559867283072dfc2d0aa5fff4b5d9127276a376aa",
+          "size": 21062
+        },
+        {
+          "path": "Textmaps/en/speaker/Speaker.json",
+          "sha256": "acbdd2a9f70f25124a6d3a7717f5841e04a6a8629dbe1d5264add02099a75b3f",
+          "size": 349824
+        },
+        {
+          "path": "Textmaps/en/subtitle_text/SubtitleText.json",
+          "sha256": "57255f2d5a2b656209582b825c3adde691dac0121eea762ed2aa64e947a4b992",
+          "size": 135656
+        },
+        {
+          "path": "Textmaps/en/text/ServerTips.json",
+          "sha256": "3f7df4135d47bb7d9a84a11d8c82ff28a02738dc4243acfee44d441da4b28119",
+          "size": 1068
+        },
+        {
+          "path": "Textmaps/en/text/Text.json",
+          "sha256": "c02b5b3dbda73b64b50092413162eb41188a7df742aad094f57d4b371a606142",
+          "size": 44339
+        },
+        {
+          "path": "Textmaps/en/time_of_day/DaySelectPreset.json",
+          "sha256": "0d8e36be9ec72ec748c97b97168b3e9a9146255202b053387d246925977d6594",
+          "size": 201
+        },
+        {
+          "path": "Textmaps/en/ui/UiDynamicTab.json",
+          "sha256": "c96360d8af7d1bc87d602b7878fd0071c197b7ce161344763ca696dfdb31767d",
+          "size": 1004
+        },
+        {
+          "path": "Textmaps/en/ui_prefabTextItem/PrefabTextItem.json",
+          "sha256": "7b6531323d100503143744b4f9ed5625de4338481c056118c10793f18256808b",
+          "size": 148406
+        },
+        {
+          "path": "Textmaps/en/weapon/WeaponConf.json",
+          "sha256": "dd5f6cef2945627cbbb5334fe7d71436015b3214015a11b599482a3483e750b0",
+          "size": 29343
+        },
+        {
+          "path": "Textmaps/en/weapon/WeaponQualityInfo.json",
+          "sha256": "cf9b8547b1105aa07c2ee539b43407158b294af3003c2c084e1a696765ad587c",
+          "size": 203
+        },
+        {
+          "path": "Textmaps/en/weapon/WeaponReson.json",
+          "sha256": "e26ce4e372f0cc69c363a9da47daa57a8391252f191972fe5e0f2b9a8492cbd5",
+          "size": 9066
+        }
+      ]
+    },
+    "Dimbreath": {
+      "repository": "https://github.com/Dimbreath/WutheringData",
+      "revision": "e9234ffe094b2d944d16b222d31102e8ab32d954",
+      "data_date": "2026-03-13T12:17:34Z",
+      "data_version": "UNKNOWN",
+      "version_evidence": null,
+      "branch": "master",
+      "license": null,
+      "files": [
+        {
+          "path": "TextMap/en/AccessPath.json",
+          "sha256": "6f00c07cb72bb5fc8781cf4867209007715090d8a17397b5ab390bdcbeb23880",
+          "size": 2177
+        },
+        {
+          "path": "TextMap/en/Achievement.json",
+          "sha256": "0872d196c731ce57a46c572ed2479b5cff31ef92cc1fd25303fcb7c501cbc827",
+          "size": 2728
+        },
+        {
+          "path": "TextMap/en/AchievementCategory.json",
+          "sha256": "2d393ca54dafb89db34c2bc651c71fb65d0fc10b3da545e2063156563cdbedfa",
+          "size": 68
+        },
+        {
+          "path": "TextMap/en/AchievementGroup.json",
+          "sha256": "8f415c7da1b71434a383c950a8f104eaec42843a35862f56a83c59fffa104da4",
+          "size": 161
+        },
+        {
+          "path": "TextMap/en/Activity.json",
+          "sha256": "fba5240ca4055d0268a69a29cfb587d29d5d0d1503c168a82bdd9b953c2ec210",
+          "size": 46
+        },
+        {
+          "path": "TextMap/en/AdventureTask.json",
+          "sha256": "937a4d6e128f109a42df2a0c92fb252c87a91854d78895f8f73a90f41508fd0d",
+          "size": 413
+        },
+        {
+          "path": "TextMap/en/AdventureTaskChapter.json",
+          "sha256": "ca8633a948812e09099b2f252bd23d3d82c94d98fc6d509a60694e1c59145d2d",
+          "size": 57
+        },
+        {
+          "path": "TextMap/en/AdviceConjunction.json",
+          "sha256": "cfb7a0afc283f925a86cf8278d0d26dd88874e9c001457adf1ba66ed7f425627",
+          "size": 101
+        },
+        {
+          "path": "TextMap/en/AdviceParams.json",
+          "sha256": "9388a5bf8175082f4e23d3d7d5365e141a14c4b5ec047b70530140cfe018677b",
+          "size": 35
+        },
+        {
+          "path": "TextMap/en/AdviceSentence.json",
+          "sha256": "6967a771a4ddbb7b8ff53262149d237d5f952de2b7ed4485e25c14ea1d0db14a",
+          "size": 353
+        },
+        {
+          "path": "TextMap/en/AdviceWord.json",
+          "sha256": "cb5e17e909247837bd30295669084fb453e93a8366afe2a237744478d4571a7b",
+          "size": 1170
+        },
+        {
+          "path": "TextMap/en/AdviceWordType.json",
+          "sha256": "15de2a1ba9789f22e0c9923f2f4143f315ffb1ea2f4a3346226f69f19fddcf3d",
+          "size": 79
+        },
+        {
+          "path": "TextMap/en/AkiMap.json",
+          "sha256": "cfb7a0afc283f925a86cf8278d0d26dd88874e9c001457adf1ba66ed7f425627",
+          "size": 101
+        },
+        {
+          "path": "TextMap/en/AnimalHandBook.json",
+          "sha256": "a74561dd2048b298e2926389d80e5e220bee3105532efa927341db5b634468d0",
+          "size": 2348
+        },
+        {
+          "path": "TextMap/en/Area.json",
+          "sha256": "218f2b47221f9aef1364f7a48daca2a10077d4e336876ca3f158eac023370c76",
+          "size": 2829
+        },
+        {
+          "path": "TextMap/en/BackgroundCard.json",
+          "sha256": "eda1dac112bf9ad29599d03af6638e24f7a322c40a3cabe502ce2f60a28c22f4",
+          "size": 293
+        },
+        {
+          "path": "TextMap/en/BanInfo.json",
+          "sha256": "8f415c7da1b71434a383c950a8f104eaec42843a35862f56a83c59fffa104da4",
+          "size": 161
+        },
+        {
+          "path": "TextMap/en/BattlePassTask.json",
+          "sha256": "044da5bf935643de581240eb920a990fe96f57fa1adc38f9253243189216445f",
+          "size": 233
+        },
+        {
+          "path": "TextMap/en/CalabashDevelopCondition.json",
+          "sha256": "27077c206f2bf1da7d02aebe3ce1ef6a2b3c5fdcade8242c8efe8fd746a8d25f",
+          "size": 143
+        },
+        {
+          "path": "TextMap/en/CalabashDevelopReward.json",
+          "sha256": "7507e5bdff52b0f117b2dd279f809133d77c6e5eb7bae0da9f093dacea2969d3",
+          "size": 1186
+        },
+        {
+          "path": "TextMap/en/CalabashLevel.json",
+          "sha256": "67763aae951982435d53aaa393d986d8547bce15540e9be2b4c915388746203f",
+          "size": 1673
+        },
+        {
+          "path": "TextMap/en/Chat.json",
+          "sha256": "f928e1e163ea3384ade7820329bb1a2243e94a93680c36b8ce6c5825ad15f09f",
+          "size": 24
+        },
+        {
+          "path": "TextMap/en/ChatExpression.json",
+          "sha256": "b7b08ff418431d80b2155f3bbfe3cb4f26af27766585c236d97a04a1b0e4d0a1",
+          "size": 281
+        },
+        {
+          "path": "TextMap/en/ChipHandBook.json",
+          "sha256": "aadf4f4825bc9531eb5a0f921a9055f9fd9ff96d775035fe2c30f6ef82ef7567",
+          "size": 287
+        },
+        {
+          "path": "TextMap/en/ChipType.json",
+          "sha256": "9388a5bf8175082f4e23d3d7d5365e141a14c4b5ec047b70530140cfe018677b",
+          "size": 35
+        },
+        {
+          "path": "TextMap/en/ComboTeaching.json",
+          "sha256": "534af8be1fd49bdc786be7f23be6f8e59c53dd4850cd1dd42ef816cf9a9b33f3",
+          "size": 1428
+        },
+        {
+          "path": "TextMap/en/CommonParam.json",
+          "sha256": "9388a5bf8175082f4e23d3d7d5365e141a14c4b5ec047b70530140cfe018677b",
+          "size": 35
+        },
+        {
+          "path": "TextMap/en/Condition.json",
+          "sha256": "d3eac9646f1491171f1279faed123d48a2dcca7371ca57f3de75e070e9ed8967",
+          "size": 13714
+        },
+        {
+          "path": "TextMap/en/ConditionGroup.json",
+          "sha256": "e5e5b08201d9db4e99c42570f66828db7dc22a4203e2de8b232adebfbe1fd972",
+          "size": 4561
+        },
+        {
+          "path": "TextMap/en/ConfirmBox.json",
+          "sha256": "d6da9824d58348fb685e94c95999544a09e62efbaec439291a969c19d551b7ea",
+          "size": 5608
+        },
+        {
+          "path": "TextMap/en/CookFixTool.json",
+          "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "size": 2
+        },
+        {
+          "path": "TextMap/en/CookFormula.json",
+          "sha256": "8c8d0fbb8d8fc9ca1b178abb0e43b9b971a588f43e16ee47e16c9293e6d0cbd8",
+          "size": 3260
+        },
+        {
+          "path": "TextMap/en/CookLevel.json",
+          "sha256": "e1dda4d8f4b4f8de425db648aec125f1453eb0c6be24587478680bb866488011",
+          "size": 113
+        },
+        {
+          "path": "TextMap/en/CookProcessMsg.json",
+          "sha256": "044da5bf935643de581240eb920a990fe96f57fa1adc38f9253243189216445f",
+          "size": 233
+        },
+        {
+          "path": "TextMap/en/CookProcessed.json",
+          "sha256": "b428cdbe34fa758f93925865ecc43dc6a04a2c1fbad77fdb2cf387e0afce4de4",
+          "size": 111
+        },
+        {
+          "path": "TextMap/en/Country.json",
+          "sha256": "4a181ba009ee956f923da8b40719c87816cf03c70db365ead4ffb3f3d1cc5af6",
+          "size": 689
+        },
+        {
+          "path": "TextMap/en/CustomSequence.json",
+          "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "size": 2
+        },
+        {
+          "path": "TextMap/en/DaySelectPreset.json",
+          "sha256": "0ffaed165be2dea58fb65cf52954e9370b0bff4e85323786e0deb307552c7824",
+          "size": 85
+        },
+        {
+          "path": "TextMap/en/DetectionText.json",
+          "sha256": "35e1742715e7dbaf0fd5cabbbd1d5707d3ac9a63fefe9c9c98e63c7c8fc7322c",
+          "size": 272
+        },
+        {
+          "path": "TextMap/en/DragonPool.json",
+          "sha256": "f25214da491f2569542ef4e710e43874f4c374fd249a3e850afcd78db6499f2a",
+          "size": 13
+        },
+        {
+          "path": "TextMap/en/DungeonDetection.json",
+          "sha256": "383032b71933261a0bbdd26c6fb38c09b41e3f7180c46a4d05b000e58e47ec04",
+          "size": 396
+        },
+        {
+          "path": "TextMap/en/ElementInfo.json",
+          "sha256": "88988d5c802fecd7dc5bb5d48ffb3bcb47edb496664f55f42018ba99733c6e29",
+          "size": 421
+        },
+        {
+          "path": "TextMap/en/ElementalReaction.json",
+          "sha256": "bf429facda54acb7a3f410a9935cd4d375422a010a3395d6a2108edaaa6c9ac7",
+          "size": 4685
+        },
+        {
+          "path": "TextMap/en/ErrorCode.json",
+          "sha256": "46f25c9b38f8106b7d6e83710f3c1b69e3e276b9bfcc8878cdcfd5d529a33e44",
+          "size": 16656
+        },
+        {
+          "path": "TextMap/en/ExploreProgress.json",
+          "sha256": "e0b5dd3641629bc4a5a4bb8088b21ee4c85264657d73890bd3755e20a5bc67a1",
+          "size": 569
+        },
+        {
+          "path": "TextMap/en/ExploreTools.json",
+          "sha256": "e70b4a5b4773e6a2a43d0e85a9d6ada0a9a2c7c49d11eeb919a9efb2a496e4ed",
+          "size": 231
+        },
+        {
+          "path": "TextMap/en/FavorGoods.json",
+          "sha256": "b4e11aeba601484d2f27deecea97f8724a3b66b345167ca74fc6ac7d6ec7267e",
+          "size": 1187
+        },
+        {
+          "path": "TextMap/en/FavorRoleInfo.json",
+          "sha256": "b3063a9c75ad54546426fb7ea887f336051b77620308bdaac43aad1050277ccd",
+          "size": 5001
+        },
+        {
+          "path": "TextMap/en/FavorStory.json",
+          "sha256": "6375150a7553fa3be19f9422643c4b173687699a426eeaf20e5ce25451e23e4c",
+          "size": 1974
+        },
+        {
+          "path": "TextMap/en/FavorWord.json",
+          "sha256": "f63606b99472ca11b23e66a9d90515930831f804acd7304a7a4c56fa4c6630e3",
+          "size": 21126
+        },
+        {
+          "path": "TextMap/en/FightFormation.json",
+          "sha256": "f25214da491f2569542ef4e710e43874f4c374fd249a3e850afcd78db6499f2a",
+          "size": 13
+        },
+        {
+          "path": "TextMap/en/Flow.json",
+          "sha256": "d6cb3ca1734a4c073f0fb82b002da0c2aea557a37c7ed8ffe6b0d6ea41fd0056",
+          "size": 15
+        },
+        {
+          "path": "TextMap/en/FlowText.json",
+          "sha256": "2a0ad092bcb9e688d6a4815823566eff629da4e43fab005ddf320bc25506f55d",
+          "size": 173
+        },
+        {
+          "path": "TextMap/en/ForgeFormula.json",
+          "sha256": "a36ba761fe64edacc4f0a078042a36b52d2711eb24dd0d209db43e86bb131c1b",
+          "size": 862
+        },
+        {
+          "path": "TextMap/en/FunctionCondition.json",
+          "sha256": "3f1ab852b20ace7fc3940c8f1971cf428f60a457ce39b011d1f0584afca2fcbd",
+          "size": 3329
+        },
+        {
+          "path": "TextMap/en/FunctionMenu.json",
+          "sha256": "53bc9460e9e26d385a24fbc724ee0fecca152cb1b774968712cb569314df9b85",
+          "size": 442
+        },
+        {
+          "path": "TextMap/en/GachaViewInfo.json",
+          "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "size": 2
+        },
+        {
+          "path": "TextMap/en/GenericPrompt.json",
+          "sha256": "9ab1ae2902b2dc66047b616c922f7735c2eb0f00b60e1efa937c93223af4c732",
+          "size": 6255
+        },
+        {
+          "path": "TextMap/en/GenericPromptTypes.json",
+          "sha256": "8393613e9a99d380b41ec853656ce50e7d00e12874069aa6d564cda9d86c759b",
+          "size": 545
+        },
+        {
+          "path": "TextMap/en/GeographyHandBook.json",
+          "sha256": "11d56273489fd322143008f20391445d6d2843dcc32ca3a10c7d462caeebc830",
+          "size": 471
+        },
+        {
+          "path": "TextMap/en/GeographyType.json",
+          "sha256": "f1bdb7bc12a64d785af5c8e258b762660274757584698e0ffaf63455dbf4fb7f",
+          "size": 22
+        },
+        {
+          "path": "TextMap/en/GuideData.json",
+          "sha256": "e1dda4d8f4b4f8de425db648aec125f1453eb0c6be24587478680bb866488011",
+          "size": 113
+        },
+        {
+          "path": "TextMap/en/GuideFocusNew.json",
+          "sha256": "8d331360f1a374b4d591d48ed3d7703aff0851cd6ae54168655785f7f9c80dbf",
+          "size": 8978
+        },
+        {
+          "path": "TextMap/en/GuideTips.json",
+          "sha256": "d407e2332e2b0a6e4e019a34d2f2ec39ef1ad3694a041e6914c035c929621a36",
+          "size": 3958
+        },
+        {
+          "path": "TextMap/en/GuideTutorial.json",
+          "sha256": "f626487fc657930c29802e7c1ad5141ce1b9b26bfa7e8adebf3ce798b6727a78",
+          "size": 3488
+        },
+        {
+          "path": "TextMap/en/GuideTutorialPage.json",
+          "sha256": "47458573d5dde6d18b791814887facb6683f2a95080319136a19e680fdf89d63",
+          "size": 26460
+        },
+        {
+          "path": "TextMap/en/HandBookEntrance.json",
+          "sha256": "12b876e2d3e1b40ddaa18625aaeb1eefce1f906b0cc5106d5080cf34c001e92b",
+          "size": 105
+        },
+        {
+          "path": "TextMap/en/HelpText.json",
+          "sha256": "2ac3c9f76aeb9647f81db6db55c807f13944347c9c074b2a172d6d1de41cdeb2",
+          "size": 1237
+        },
+        {
+          "path": "TextMap/en/HotKeyMap.json",
+          "sha256": "9388a5bf8175082f4e23d3d7d5365e141a14c4b5ec047b70530140cfe018677b",
+          "size": 35
+        },
+        {
+          "path": "TextMap/en/HotKeyText.json",
+          "sha256": "1d8af6307fab2e48cdee00c55466c594a344bc746660a9afe0ec97f647b64e84",
+          "size": 1009
+        },
+        {
+          "path": "TextMap/en/Influence.json",
+          "sha256": "013a4657718dd3ff4e4b469c532bf41c80bbe300d6eb409770a5626056e54a20",
+          "size": 1934
+        },
+        {
+          "path": "TextMap/en/InfoDisplay.json",
+          "sha256": "09a4d6b3a81afc9d1f05aa3f38852230c817180252968e72539fdb4c81d134aa",
+          "size": 67662
+        },
+        {
+          "path": "TextMap/en/InstanceDungeon.json",
+          "sha256": "4f127118962318721dc8d47247de5f0c3826824dd2fb173bfb76e784693c97a1",
+          "size": 16289
+        },
+        {
+          "path": "TextMap/en/InstanceDungeonTitle.json",
+          "sha256": "044da5bf935643de581240eb920a990fe96f57fa1adc38f9253243189216445f",
+          "size": 233
+        },
+        {
+          "path": "TextMap/en/ItemHandBook.json",
+          "sha256": "ef4a4026428a26d46b1f9b155f1b8d62ab30d1058477a2447eaa93ad843a518d",
+          "size": 7294
+        },
+        {
+          "path": "TextMap/en/ItemHandBookType.json",
+          "sha256": "fba5240ca4055d0268a69a29cfb587d29d5d0d1503c168a82bdd9b953c2ec210",
+          "size": 46
+        },
+        {
+          "path": "TextMap/en/ItemInfo.json",
+          "sha256": "9ec2b87d00466112357a87b0d7f50a4126f8dfa831a9051301cf72876d64ea63",
+          "size": 129445
+        },
+        {
+          "path": "TextMap/en/ItemMainType.json",
+          "sha256": "d803d29d596abdac3ee05e6be3dfa35d26ba44769ade92274e7b99fae6356061",
+          "size": 97
+        },
+        {
+          "path": "TextMap/en/ItemShowType.json",
+          "sha256": "319e5b06734327d46e695c725be010cbc33a3d4acfa3b89faa9c68659f075287",
+          "size": 1134
+        },
+        {
+          "path": "TextMap/en/LoadingTipsText.json",
+          "sha256": "e03f444304af6b35256438988f63a6628afe39b3d48d90595e1043eeb2f55124",
+          "size": 757
+        },
+        {
+          "path": "TextMap/en/MailFilter.json",
+          "sha256": "9388a5bf8175082f4e23d3d7d5365e141a14c4b5ec047b70530140cfe018677b",
+          "size": 35
+        },
+        {
+          "path": "TextMap/en/MainType.json",
+          "sha256": "46f049477497a5433bc0b88f816cc614c27a2c5c3c04e20cb02761c5e8dcf6a5",
+          "size": 87
+        },
+        {
+          "path": "TextMap/en/MapMark.json",
+          "sha256": "13e8a6a7cf0021b0e9dde70e54e2a43148d202e633f19477744bef8fb9585f85",
+          "size": 44050
+        },
+        {
+          "path": "TextMap/en/MapNote.json",
+          "sha256": "f25214da491f2569542ef4e710e43874f4c374fd249a3e850afcd78db6499f2a",
+          "size": 13
+        },
+        {
+          "path": "TextMap/en/Mapping.json",
+          "sha256": "21f4710f11900ef1f50672d7801aafcc30662550fd2908c3d844b036d267654f",
+          "size": 255
+        },
+        {
+          "path": "TextMap/en/MenuConfig.json",
+          "sha256": "f90ae6036ac7588c968a55c1c1e1afb8999719e7c019be995bbfd3abdb662cca",
+          "size": 5101
+        },
+        {
+          "path": "TextMap/en/MonsterDetection.json",
+          "sha256": "d8f262ee48b7a26cda822f92c00c6ef87a34f0dac068507933912d12ae2f588e",
+          "size": 14259
+        },
+        {
+          "path": "TextMap/en/MonsterDisplay.json",
+          "sha256": "fba5240ca4055d0268a69a29cfb587d29d5d0d1503c168a82bdd9b953c2ec210",
+          "size": 46
+        },
+        {
+          "path": "TextMap/en/MonsterHandBook.json",
+          "sha256": "913c010646c7557aba4110c8860acd4d0c6f90035d03edc1b476ef6cca355d7f",
+          "size": 14211
+        },
+        {
+          "path": "TextMap/en/MonsterHandBookType.json",
+          "sha256": "15de2a1ba9789f22e0c9923f2f4143f315ffb1ea2f4a3346226f69f19fddcf3d",
+          "size": 79
+        },
+        {
+          "path": "TextMap/en/MonsterInfo.json",
+          "sha256": "9c43fbd52965a24f4b659400d6a4677dec5eb348311dd7d073d673cfe39d9b43",
+          "size": 27398
+        },
+        {
+          "path": "TextMap/en/MonsterPerch.json",
+          "sha256": "1a332382ba381b76032709d6d2cfb01c80da8b260f4c72a18fd3e07757b2a1db",
+          "size": 351
+        },
+        {
+          "path": "TextMap/en/MonsterRarity.json",
+          "sha256": "3139475f6c8f2336c63a2d332b6a1ce6d9da0e6c7928149d8a5ae5211d1e3de4",
+          "size": 99
+        },
+        {
+          "path": "TextMap/en/Motion.json",
+          "sha256": "856ac02b563fd65f67719865059071ebd955d9871e2acd82a2c03f9f699db26e",
+          "size": 221
+        },
+        {
+          "path": "TextMap/en/MultiText.json",
+          "sha256": "e1e398e892382443fbd968419ad2a7b10d1173c6251134736c0f95d9f8a7e3c6",
+          "size": 24133573
+        },
+        {
+          "path": "TextMap/en/MultiText_1sthalf.json",
+          "sha256": "8f7e2f0b673b16a54abaecc2aceed9c0c92dd15bb2a5233f6147cc760de98e2a",
+          "size": 132685
+        },
+        {
+          "path": "TextMap/en/NpcHeadInfo.json",
+          "sha256": "defa125a26dd6324dd4e8c2fa803b37ddeef9bf3da01fc1b561919b1479d4a6d",
+          "size": 535
+        },
+        {
+          "path": "TextMap/en/OccupationConfig.json",
+          "sha256": "4bc11a16fea6ab6bd34609afd77f11e744c36f5afee8ef83a3af357e2c3e1278",
+          "size": 2728
+        },
+        {
+          "path": "TextMap/en/PackageCapacity.json",
+          "sha256": "ca8633a948812e09099b2f252bd23d3d82c94d98fc6d509a60694e1c59145d2d",
+          "size": 57
+        },
+        {
+          "path": "TextMap/en/ParkourChallenge.json",
+          "sha256": "9388a5bf8175082f4e23d3d7d5365e141a14c4b5ec047b70530140cfe018677b",
+          "size": 35
+        },
+        {
+          "path": "TextMap/en/PayShop.json",
+          "sha256": "bac879ac93381be977c30ad20203bf4fc340c166e208598f39e6dab30790f571",
+          "size": 114
+        },
+        {
+          "path": "TextMap/en/PayShopCondition.json",
+          "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "size": 2
+        },
+        {
+          "path": "TextMap/en/PayShopGoods.json",
+          "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "size": 2
+        },
+        {
+          "path": "TextMap/en/PayShopTab.json",
+          "sha256": "c7ab57601d48ae2a6392f941a905d157c95dffc0f28983b964c963c157d2b44a",
+          "size": 148
+        },
+        {
+          "path": "TextMap/en/PersonalTips.json",
+          "sha256": "4173a62ed6016d495c0f07ad11897e5d91cea535ed745bf0e8095e5dee3b441f",
+          "size": 137
+        },
+        {
+          "path": "TextMap/en/PhantomFetter.json",
+          "sha256": "c6f8cf4cfa9fe2369795e9560662acc9e0759a924ad02e7fafb4290a6b14ff2f",
+          "size": 5766
+        },
+        {
+          "path": "TextMap/en/PhantomHandBook.json",
+          "sha256": "01008f694f3f80c33c7f53c5c20654c8add023878a2298f63a9eb176e4a2672b",
+          "size": 6439
+        },
+        {
+          "path": "TextMap/en/PhantomItem.json",
+          "sha256": "cabfc37dc40939d15c15b2064b0cfb8c70a64cc7028963d219f121080dbf3af0",
+          "size": 16330
+        },
+        {
+          "path": "TextMap/en/PhantomSkill.json",
+          "sha256": "85ecbd98d309a0be01cb9a2b238d462c951655a55b2fbcc34eed29a9ecc85f87",
+          "size": 140414
+        },
+        {
+          "path": "TextMap/en/PhotoMontage.json",
+          "sha256": "2a0ad092bcb9e688d6a4815823566eff629da4e43fab005ddf320bc25506f55d",
+          "size": 173
+        },
+        {
+          "path": "TextMap/en/PhotoSetup.json",
+          "sha256": "2d7d7f0a4f5ae3877c974d5ebf1e2394c6e9dfe3d61382e5b9c40b21e3ae4f5d",
+          "size": 245
+        },
+        {
+          "path": "TextMap/en/PhotographHandBook.json",
+          "sha256": "4173a62ed6016d495c0f07ad11897e5d91cea535ed745bf0e8095e5dee3b441f",
+          "size": 137
+        },
+        {
+          "path": "TextMap/en/PlotType.json",
+          "sha256": "2d393ca54dafb89db34c2bc651c71fb65d0fc10b3da545e2063156563cdbedfa",
+          "size": 68
+        },
+        {
+          "path": "TextMap/en/PrefabTextItem.json",
+          "sha256": "358843913b0dff79ab1f6ad380f28428422e1c7ea13370c682396df97db722c2",
+          "size": 47573
+        },
+        {
+          "path": "TextMap/en/PreviewItem.json",
+          "sha256": "2a0ad092bcb9e688d6a4815823566eff629da4e43fab005ddf320bc25506f55d",
+          "size": 173
+        },
+        {
+          "path": "TextMap/en/PropertyIndex.json",
+          "sha256": "1b03fef806e0b38e9570e8862953502f5ab77e69b50d89cce48f95db5f30f3cc",
+          "size": 7317
+        },
+        {
+          "path": "TextMap/en/QualityInfo.json",
+          "sha256": "ca8633a948812e09099b2f252bd23d3d82c94d98fc6d509a60694e1c59145d2d",
+          "size": 57
+        },
+        {
+          "path": "TextMap/en/Quest.json",
+          "sha256": "b26d235704033722d1a5eb29c549260ea05638cd5b00e79d264102e2f170eca8",
+          "size": 2156
+        },
+        {
+          "path": "TextMap/en/QuestChapter.json",
+          "sha256": "9d71f368b3ed510cb7fd214854f0e479b1ed89d78353ac6011b737a6f9a16c63",
+          "size": 864
+        },
+        {
+          "path": "TextMap/en/QuestType.json",
+          "sha256": "53d614ab2a2aa65db1d09e2975b8ef961e6af3c1f3b1e1ddd44b273aef10943f",
+          "size": 263
+        },
+        {
+          "path": "TextMap/en/QuickChat.json",
+          "sha256": "1b0a82abf8ee5a0c9219bf88a541dab66840999fe9d07351d2ba20254f61da34",
+          "size": 90
+        },
+        {
+          "path": "TextMap/en/ReportPlayerInfo.json",
+          "sha256": "ca8633a948812e09099b2f252bd23d3d82c94d98fc6d509a60694e1c59145d2d",
+          "size": 57
+        },
+        {
+          "path": "TextMap/en/ResonantChain.json",
+          "sha256": "ed03be1825ba99aa42c7da275e0c91fed7aa6e5345d964a11a576c290ff50fb5",
+          "size": 16106
+        },
+        {
+          "path": "TextMap/en/Revive.json",
+          "sha256": "d3c6aec4cc466658806c7a133e43e9414e5c4460c822adf7b39281e382451fb8",
+          "size": 1033
+        },
+        {
+          "path": "TextMap/en/RoleDescription.json",
+          "sha256": "014519420f5a6f8edc83d4e7ce62074f02858683019bbd8e2ee597b16320e84a",
+          "size": 924
+        },
+        {
+          "path": "TextMap/en/RoleInfluence.json",
+          "sha256": "eb56f9a09e08cb44e527bffca3d72f3a70c21fd89ab571839499c1f9ab6ef2bd",
+          "size": 59
+        },
+        {
+          "path": "TextMap/en/RoleInfo.json",
+          "sha256": "1f4d56d900b65e77a9c0fdf0fe26e15a10b819b7d63701c98fa878f98119a0e2",
+          "size": 8275
+        },
+        {
+          "path": "TextMap/en/RoleQualityInfo.json",
+          "sha256": "97389df455f8e51ded1db0b7f0162c32da14abd916a16888baa54f9e5fe7d92d",
+          "size": 36
+        },
+        {
+          "path": "TextMap/en/RoleQuest.json",
+          "sha256": "15de2a1ba9789f22e0c9923f2f4143f315ffb1ea2f4a3346226f69f19fddcf3d",
+          "size": 79
+        },
+        {
+          "path": "TextMap/en/RoleTrainingDegree.json",
+          "sha256": "d92f00cb1d55d737f7b56f50a5414606671f74be69855534ed39a41a5a22b016",
+          "size": 1194
+        },
+        {
+          "path": "TextMap/en/ShopBankInfo.json",
+          "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "size": 2
+        },
+        {
+          "path": "TextMap/en/ShopFixed.json",
+          "sha256": "b2f34caf3709150180d32ce423d4d7712059d1f452d1e429b05d6b12e00739ee",
+          "size": 3144
+        },
+        {
+          "path": "TextMap/en/ShopInfo.json",
+          "sha256": "28ee9b8641f2cb01b432c13005818fe58fae54420cb18dfbd4147ed5bb24f0df",
+          "size": 237
+        },
+        {
+          "path": "TextMap/en/SilentAreaDetection.json",
+          "sha256": "5f8d27f71b7e3802b4f259d1df11a386e82fb98cf6d3762255e131e109b123ce",
+          "size": 1555
+        },
+        {
+          "path": "TextMap/en/Skill.json",
+          "sha256": "8d20cf255a9fed40996e6d02d42f5d6ba1f35698e41ac23539e64c8e458070c6",
+          "size": 3665
+        },
+        {
+          "path": "TextMap/en/SkillCondition.json",
+          "sha256": "3d276379ac976249a60c38e7d0f88e878ddc3292f9d800a9c1af35fec4e87fd6",
+          "size": 313
+        },
+        {
+          "path": "TextMap/en/SkillDescription.json",
+          "sha256": "e6e9a557655a3bfc3316d0b61df5b5f0d33a25539d3a0349d672de3f0c806ba6",
+          "size": 7473
+        },
+        {
+          "path": "TextMap/en/SkillInput.json",
+          "sha256": "3270ac2f07311aa9e19a9f70ebac3cee996e3b92954fd557522742feb687f9d1",
+          "size": 3712
+        },
+        {
+          "path": "TextMap/en/SkillLevel.json",
+          "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "size": 2
+        },
+        {
+          "path": "TextMap/en/SkillTree.json",
+          "sha256": "14e1ef4dcddd2f671715b7e08371852bd8454c2e67ad0f29dbe139f6e58421cf",
+          "size": 6446
+        },
+        {
+          "path": "TextMap/en/SkillType.json",
+          "sha256": "a895fd599ca1d30e868ed094ac1208940bc4b3e3c41221d1120d71348f464d85",
+          "size": 133
+        },
+        {
+          "path": "TextMap/en/Speaker.json",
+          "sha256": "0b024a43542b1026fe8350d7c0b3d065b387f9f4be3a723cc54a37d6ad1eca86",
+          "size": 90173
+        },
+        {
+          "path": "TextMap/en/SpecialCook.json",
+          "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "size": 2
+        },
+        {
+          "path": "TextMap/en/SubtitleText.json",
+          "sha256": "17598ee2f3fb2faa7dbb2909c5bbdc858e2fa57627a1afb7492f7f43248f535a",
+          "size": 59125
+        },
+        {
+          "path": "TextMap/en/SynthesisFormula.json",
+          "sha256": "5fa6ea81e8ce43d29fcc81e11609808d5fee152d99f16b4a347841fe4c8b567d",
+          "size": 17484
+        },
+        {
+          "path": "TextMap/en/SynthesisLevel.json",
+          "sha256": "fba5240ca4055d0268a69a29cfb587d29d5d0d1503c168a82bdd9b953c2ec210",
+          "size": 46
+        },
+        {
+          "path": "TextMap/en/Text.json",
+          "sha256": "74a4e328da20596c9bf9c4a2cd53b0945ed4eba8fb546894811deb6c3412776d",
+          "size": 14237
+        },
+        {
+          "path": "TextMap/en/TidText.json",
+          "sha256": "020ab89488bf3c0304b689114313f64dadc3d5c0b98527b14f94739fc71dd7a5",
+          "size": 60961
+        },
+        {
+          "path": "TextMap/en/UiDynamicTab.json",
+          "sha256": "52ef700df4108daedb846e6fe4ed4411f6157b56a25e5aecc8cc16ac7ed9ae1e",
+          "size": 308
+        },
+        {
+          "path": "TextMap/en/VideoCaption.json",
+          "sha256": "3ea9dbbb8fcc748e7bc4708057419f07a2537a8611ac13307fc39e92757723bc",
+          "size": 2584
+        },
+        {
+          "path": "TextMap/en/WeaponConf.json",
+          "sha256": "d367120f3218f2a3e1dcda95d44755879404e8689a716ebacc631994a1df01f8",
+          "size": 21339
+        },
+        {
+          "path": "TextMap/en/WeaponQualityInfo.json",
+          "sha256": "f49115f355aef48fd09835f5d4186c436ea66126caba8d6e5f65c672f4494c7d",
+          "size": 58
+        },
+        {
+          "path": "TextMap/en/WeaponReson.json",
+          "sha256": "ef674a5c2ff8e12da9d3ad19c80064af432264f86904eeb809d0e7147a197d30",
+          "size": 3991
+        }
+      ]
+    }
+  }
+}

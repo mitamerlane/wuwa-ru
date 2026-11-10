@@ -1,0 +1,29 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+
+# Build output
+build/
+dist/
+*.spec.bak
+
+# Local data of the app and tests
+Data/
+Backups/
+Exports/
+Imports/
+Logs/
+Projects/
+.test-tmp/
+
+# Never commit game files, keys or secrets
+*.pak
+*.sig
+*.db
+*.sqlite*
+*.pem
+*.key
+.env*
+installer/background.jpg
