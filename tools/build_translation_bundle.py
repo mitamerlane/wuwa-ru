@@ -4,7 +4,8 @@ Produces build/bundle/seed/ laid out like the portable app root:
 
   Data/settings.json                         opens the bundled project on first start
   Data/Projects/WuWaRussian-RU/              slim copy of a translation project
-  Data/Native/lang_multi_text.en.db          pinned public English table (SHA-256 checked)
+  Data/Native/lang_multi_text.en.db          pinned public English table (SHA-256 checked),
+  Data/Native/table.json                     or, with --table-record, the table that record names
   Data/Native/NotoSans-600.ttf               pinned font (SHA-256 checked)
   Data/Native/staging/<key>.pak + package.json   package built and verified by native_package
 
@@ -65,6 +66,8 @@ def main() -> int:
     ap.add_argument('--project-db', required=True, help='translations.sqlite to ship (read-only)')
     ap.add_argument('--table', required=True, help='public lang_multi_text.db, SHA-256 014b0975…')
     ap.add_argument('--font', required=True, help='NotoSans-600.ttf, SHA-256 c546e2e5…')
+    ap.add_argument('--table-record', help='table.json of a table that is not the pinned snapshot '
+                                           '(tools.native_table fetch/build); it ships as Data/Native/table.json')
     ap.add_argument('--out', default=str(ROOT / 'build/bundle'))
     args = ap.parse_args()
 
@@ -75,7 +78,13 @@ def main() -> int:
     project_db = data / 'Projects' / PROJECT / 'translations.sqlite'
     stats = slim_project(Path(args.project_db), project_db)
     native = data / 'Native'
-    native_package.install_inputs(Path(args.table), Path(args.font), native)
+    if args.table_record:
+        record = native_package.check_record(json.loads(Path(args.table_record).read_text(encoding='utf-8')))
+        native_package.install_inputs(Path(args.table), Path(args.font), native,
+                                      pins=(record['sha256'], native_package.FONT_SHA256))
+        native_package.install_table(Path(args.table), record, native)  # checks the file again, writes table.json
+    else:
+        native_package.install_inputs(Path(args.table), Path(args.font), native)
     report = native_package.build_package(project_db, native, DEFAULT_NATIVE_KINDS)
     (data / 'settings.json').write_text(json.dumps({
         'schema_version': 1,

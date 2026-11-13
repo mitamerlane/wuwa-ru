@@ -188,3 +188,58 @@ class LauncherUpdateTests(LauncherPlayTests):
         start.assert_not_called()
         self.assertEqual(dialog.status.text(), 'Подпись не сходится')
         self.assertEqual(dialog.update_button.text(), 'Повторить')
+
+
+class LauncherDeltaTests(LauncherPlayTests):
+    """Translation delta statuses on the Play page; the update itself is mocked, nothing touches the network."""
+
+    locals().update({name: None for name in dir(LauncherPlayTests) if name.startswith('test')})  # setUp only
+
+    def until(self, condition, timeout=5000):
+        from PySide6.QtCore import QElapsedTimer
+        clock = QElapsedTimer()
+        clock.start()
+        while not condition() and clock.elapsed() < timeout:
+            QApplication.processEvents()
+        self.assertTrue(condition(), 'condition not reached')
+
+    def run_check(self, result=None, error=None):
+        from wuwaru import delta_updates
+        with patch.object(delta_updates, 'run_delta_update', return_value=result, side_effect=error) as run, \
+                patch.object(self.window, 'refresh_play') as refresh:
+            self.window.check_delta_update()
+            self.until(lambda: self.window.job is None and not self.window._delta_running)
+        return run, refresh
+
+    def test_statuses_are_shown_in_plain_words(self):
+        from wuwaru import delta_updates as delta
+        for state, word in ((delta.UP_TO_DATE, 'Перевод актуален'), (delta.WAITING_TABLE, 'Ждём'),
+                            (delta.TABLE_RECEIVED, 'Таблица получена'), (delta.NETWORK_ERROR, 'Нет связи'),
+                            (delta.HASH_ERROR, 'SHA-256')):
+            with self.subTest(state):
+                self.run_check(dict(state=state, message=delta.LABELS[state]))
+                self.assertEqual(self.window.delta_state, state)
+                self.assertTrue(self.window.delta_status.isVisibleTo(self.window))
+                self.assertIn(word, self.window.delta_status.text())
+
+    def test_a_taken_delta_or_table_refreshes_the_package_state_but_never_plays(self):
+        from wuwaru import delta_updates as delta
+        _, refresh = self.run_check(dict(state=delta.WAITING_TABLE, message='x', applied=dict(applied=3)))
+        refresh.assert_called_once()
+        _, refresh = self.run_check(dict(state=delta.UP_TO_DATE, message='x'))
+        refresh.assert_not_called()
+        self.assertEqual(self.elevated(), [])
+
+    def test_a_crashing_job_is_shown_not_raised(self):
+        self.run_check(error=OSError('диск занят'))
+        self.assertEqual(self.window.delta_state, 'ERROR')
+        self.assertIn('диск занят', self.window.delta_status.text())
+
+    def test_the_check_waits_for_a_running_job_and_the_source_checkout_does_not_check_at_start(self):
+        from wuwaru import delta_ui
+        with patch.object(delta_ui.QTimer, 'singleShot') as timer:
+            self.window.schedule_delta_update()
+        timer.assert_not_called()
+        with patch.object(delta_ui.sys, 'frozen', True, create=True), patch.object(delta_ui.QTimer, 'singleShot') as timer:
+            self.window.schedule_delta_update()
+        timer.assert_called_once()

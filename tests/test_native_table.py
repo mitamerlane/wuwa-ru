@@ -234,3 +234,97 @@ class FetchTests(TableCase):
                 tool.fetch(self.native, opener=FakeGitHub(data, served=served))
             self.assertEqual(self.snapshot(), before)
         self.assertFalse(any(path.name.startswith('.fetch-') for path in self.native.iterdir()))
+
+
+TEXT_REVISION = 'c' * 40
+TEXT_API = 'https://api.github.com/repos/Arikatsu/WutheringWaves_Data'
+
+
+def text_json(rows) -> bytes:
+    return json.dumps([dict(Id=key, Content=value, RedirectDbIndex=redirect) for key, value, redirect in rows],
+                      ensure_ascii=False, indent=2).encode('utf-8')
+
+
+class FakeTextGitHub:
+    """Arikatsu/WutheringWaves_Data at one revision: Textmaps/en/multi_text/MultiText.json."""
+
+    def __init__(self, data: bytes, *, served: bytes | None = None):
+        self.data, self.served, self.urls = data, data if served is None else served, []
+        self.tree = {'root': [{'path': 'Textmaps', 'type': 'tree', 'sha': 't1'}],
+                     't1': [{'path': 'en', 'type': 'tree', 'sha': 't2'}],
+                     't2': [{'path': 'multi_text', 'type': 'tree', 'sha': 't3'}],
+                     't3': [{'path': 'MultiText.json', 'type': 'blob', 'sha': blob(data), 'size': len(data)}]}
+
+    def __call__(self, url):
+        self.urls.append(url)
+        if url == TEXT_API + '/commits/' + TEXT_REVISION:
+            body = {'sha': TEXT_REVISION, 'commit': {'message': 'GameVer 3.8.0 | ResVer 3.8.9 | Release',
+                                                     'committer': {'date': '2026-11-12T02:56:18Z'},
+                                                     'tree': {'sha': 'root'}}}
+        elif url.startswith(TEXT_API + '/git/trees/'):
+            body = {'tree': self.tree[url.rsplit('/', 1)[1]], 'truncated': False}
+        elif url == ('https://raw.githubusercontent.com/Arikatsu/WutheringWaves_Data/' + TEXT_REVISION +
+                     '/Textmaps/en/multi_text/MultiText.json'):
+            return io.BytesIO(self.served)
+        else:
+            raise AssertionError('unexpected url ' + url)
+        return io.BytesIO(json.dumps(body).encode('utf-8'))
+
+
+class BuildFromTextTests(TableCase):
+    """No public table for the new version yet: the same rows come from the public text source."""
+
+    ROWS = [(key, value, int(key == 'PrefabTextItem_4_Text')) for key, value in reversed(list(NEWER.items()))]
+
+    def test_build_writes_the_rows_in_source_order_with_provenance(self):
+        data = text_json(self.ROWS)
+        record = tool.build(self.native, TEXT_REVISION, opener=FakeTextGitHub(data))
+        built = self.inputs.table.read_bytes()
+        self.assertEqual(record, dict(
+            repository='Arikatsu/WutheringWaves_Data', path='Textmaps/en/multi_text/MultiText.json',
+            revision=TEXT_REVISION, blob=blob(built), size=len(built), sha256=hashlib.sha256(built).hexdigest(),
+            data_version='GameVer 3.8.0 | ResVer 3.8.9 | Release', data_date='2026-11-12T02:56:18Z',
+            source_blob=blob(data)))
+        self.assertEqual(package.table_record(self.native), record)
+        database = package.open_read_only(self.inputs.table)
+        try:
+            self.assertEqual(database.execute('SELECT Id, Content, RedirectDbIndex FROM MultiText ORDER BY rowid')
+                             .fetchall(), self.ROWS)
+            self.assertEqual(database.execute("SELECT sql FROM sqlite_master WHERE name='MultiText'").fetchone()[0],
+                             package.TABLE_DDL)
+        finally:
+            database.close()
+        self.assertIn('WutheringWaves_Data ' + TEXT_REVISION[:12], package.table_label(record))
+        self.assertFalse(any(path.name.startswith('.fetch-') for path in self.native.iterdir()))
+        package.check_inputs(self.inputs)
+
+    def test_the_revision_must_be_named_in_full(self):
+        for revision in (None, '3.8', 'c' * 39):
+            with self.subTest(revision), self.assertRaises(ValueError):
+                tool.build(self.native, revision, opener=FakeTextGitHub(text_json(self.ROWS)))
+
+    def test_bad_source_changes_nothing(self):
+        before = self.snapshot()
+        good = text_json(self.ROWS)
+        first = self.ROWS[0]
+        bad = {'duplicate': text_json(self.ROWS + [first]), 'empty': b'[]', 'not a list': b'{}',
+               'content': text_json([(first[0], 5, 0)]), 'redirect': text_json([(first[0], 'x', '0')]),
+               'bool': text_json([(first[0], 'x', True)]), 'id': text_json([('', 'x', 0)]),
+               'extra field': json.dumps([dict(Id='a', Content='b', RedirectDbIndex=0, More=1)]).encode(),
+               'not json': b'\xff\xfe'}
+        for name, data in bad.items():
+            with self.subTest(name), self.assertRaises(ValueError):
+                tool.build(self.native, TEXT_REVISION, opener=FakeTextGitHub(data))
+            self.assertEqual(self.snapshot(), before)
+        with self.assertRaises(ValueError):  # the download is not the file of the tree
+            tool.build(self.native, TEXT_REVISION, opener=FakeTextGitHub(good, served=good + b' '))
+        self.assertEqual(self.snapshot(), before)
+        self.assertFalse(any(path.name.startswith('.fetch-') for path in self.native.iterdir()))
+
+    def test_source_blob_belongs_only_to_a_built_table(self):
+        built = tool.build(self.native, TEXT_REVISION, opener=FakeTextGitHub(text_json(self.ROWS)))
+        without = {name: value for name, value in built.items() if name != 'source_blob'}
+        for record in (without, dict(self.record(), source_blob='d' * 40), dict(built, source_blob='x'),
+                       dict(built, path=package.TABLE_PATH)):
+            with self.subTest(sorted(record)), self.assertRaises(ValueError):
+                package.check_record(record)

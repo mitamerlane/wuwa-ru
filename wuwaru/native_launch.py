@@ -17,13 +17,59 @@ import subprocess
 import tempfile
 import uuid
 
-from wuwaru.discovery import STEAM_APP_ID, parse_vdf
+from wuwaru.discovery import NESTED_GAME, STEAM_APP_ID, inspect_installation, parse_vdf
 from wuwaru.native_package import PINNED_TABLE, sha256, table_record
-from wuwaru.paths import inside, reject_links
+from wuwaru.paths import UnsafePath, inside, reject_links
 
-RESOURCE = 'Client/Saved/Resources/3.7.0'
-MOUNT = RESOURCE + '/Mount/MountLang_en.txt'
+RESOURCES = 'Client/Saved/Resources'
+RESOURCE = RESOURCES + '/3.7.0'  # the 3.7 research tools and fixtures; the application asks resource(game)
+MOUNT_FILE = 'Mount/MountLang_en.txt'
+MOUNT = RESOURCE + '/' + MOUNT_FILE
 LIMIT = 4096
+VERSION_FOLDER = re.compile(r'\d{1,3}\.\d{1,3}\.\d{1,3}')
+
+
+def resource(game: Path) -> str:
+    """'Client/Saved/Resources/<version>' of this game: the one version folder with the language Mount.
+
+    The folder is named after the game version (3.7.0, 3.8.0…). None is FileNotFoundError; several are not
+    guessed between."""
+    base = inside(game, RESOURCES)
+    reject_links(base)
+    try:
+        names = sorted(item.name for item in base.iterdir() if VERSION_FOLDER.fullmatch(item.name)
+                       and (item / MOUNT_FILE).is_file())
+    except (FileNotFoundError, NotADirectoryError):
+        names = []
+    if not names:
+        raise FileNotFoundError('Нет MountLang_en.txt')
+    if len(names) > 1:
+        raise ValueError('Несколько папок ресурсов игры, какая действует — неизвестно: ' + ', '.join(names))
+    return RESOURCES + '/' + names[0]
+
+
+def mount_path(game: Path) -> Path:
+    return inside(game, resource(game) + '/' + MOUNT_FILE)
+
+
+def pak_path(game: Path) -> Path:
+    return inside(game, resource(game) + '/Lang_en/Base/' + PAK_NAME)
+
+
+def resources_label(game: Path | None) -> str:
+    """Version folder name for a badge, '—' when the game or its folder is not known."""
+    try:
+        return resource(inspect_installation(Path(game)).root).rsplit('/', 1)[-1]
+    except (OSError, ValueError, TypeError):
+        return '—'
+
+
+def install_top(game: Path) -> Path:
+    """The folder Steam installed: the game itself, or the launcher folder above the nested game."""
+    game = Path(game)
+    if game.name.casefold() == NESTED_GAME.casefold() and (game.parent / 'launcher.exe').is_file():
+        return game.parent
+    return game
 
 
 def read_bounded(path: Path, limit: int = LIMIT) -> bytes:
@@ -46,7 +92,7 @@ def consumers(game: Path) -> list[dict]:
     code = ("$ErrorActionPreference='Stop'; $all=@(Get-CimInstance Win32_Process); "
             "if (!$all.Count) { throw 'Process inventory unavailable' }; "
             "$matches=@($all | Where-Object { $_.Name -match "
-            "'(?i)Client-Win64-Shipping|Wuther|launcher|Kuro' -or "
+            "'(?i)Client-Win64-Shipping|Wuther|launcher|Kuro|KRInstall' -or "
             f"($_.ExecutablePath -and $_.ExecutablePath.StartsWith('{quoted_root}',"
             "[StringComparison]::OrdinalIgnoreCase)) } | "
             "Select-Object ProcessId,Name,ExecutablePath); "
@@ -61,7 +107,8 @@ def consumers(game: Path) -> list[dict]:
     return json.loads(result.stdout.lstrip('\ufeff'))
 
 
-GAME_PROCESS = re.compile(r'(?i)Client-Win64-Shipping|Wuther|Kuro')
+# launcher_main/launcher_updater/KRInstall are the Kuro launcher of the 3.8 layout; it runs elevated, without a path.
+GAME_PROCESS = re.compile(r'(?i)Client-Win64-Shipping|Wuther|Kuro|^launcher_(main|updater)\.exe$|^KRInstall')
 
 
 def game_processes(game: Path) -> list[dict]:
@@ -69,7 +116,7 @@ def game_processes(game: Path) -> list[dict]:
 
     `consumers` also matches any *launcher* (Epic, Battle.net\u2026), which says nothing about this
     game; the tools keep using it unchanged. Failures propagate, so callers still fail closed."""
-    root = os.path.normcase(os.path.abspath(game)).rstrip('\\/') + os.sep
+    root = os.path.normcase(os.path.abspath(install_top(game))).rstrip('\\/') + os.sep  # the Kuro launcher too
     found = []
     for item in consumers(game):
         name, path = str(item.get('Name') or ''), str(item.get('ExecutablePath') or '')
@@ -128,6 +175,7 @@ def replace_atomic(path: Path, expected: bytes, desired: bytes, *, landed=None) 
 
 def update_guard(game: Path) -> None:
     """Steam state whitelist only; never export or hash the personal appmanifest."""
+    game = install_top(game)
     if game.parent.name.casefold() != 'common' or game.parent.parent.name.casefold() != 'steamapps':
         raise ValueError('A/B updater check requires the prepared Steam installation')
     apps = game.parent.parent
@@ -181,6 +229,7 @@ class LaunchState:
     installed_bytes: int | None = None
     mount_applied: bool = False  # READY and Mount already holds exactly our line for the installed PAK
     table: dict | None = None  # provenance of the English table in Data/Native (None: table.json unreadable)
+    resources: str | None = None  # version folder under Client/Saved/Resources the state was read from
 
 
 def _lines(mount: bytes) -> tuple[list[str], int, int]:
@@ -341,10 +390,17 @@ def inspect(game: Path | None, native: Path, key: str | None, *, running=game_pr
         state.reasons.append('Игра не найдена')
         return state
     try:
-        mount = read_bounded(inside(game, MOUNT))
+        folder = resource(game)
+        mount = read_bounded(inside(game, folder + '/' + MOUNT_FILE))
     except FileNotFoundError:
         state.reasons.append('Нет MountLang_en.txt')
         return state
+    except UnsafePath:
+        raise
+    except ValueError as error:  # several version folders: not guessed between
+        state.reasons.append(str(error))
+        return state
+    state.resources = folder.rsplit('/', 1)[-1]
     state.mount_sha256 = hashlib.sha256(mount).hexdigest()
     try:
         state.fingerprint = fingerprint(mount)
@@ -353,7 +409,7 @@ def inspect(game: Path | None, native: Path, key: str | None, *, running=game_pr
         state.reasons.append(str(error))
     state.package = _package(native)
     state.installed_record = _package(native, 'installed.json')
-    pak = inside(game, PAK_RELATIVE)
+    pak = inside(game, folder + '/Lang_en/Base/' + PAK_NAME)
     if pak.is_file():
         reject_links(pak)
         state.installed_sha256 = sha256(pak)

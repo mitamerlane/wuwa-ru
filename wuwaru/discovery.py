@@ -72,14 +72,19 @@ def parse_vdf(text: str) -> dict:
     return block()
 
 
+NESTED_GAME = 'Wuthering Waves Game'
+
+
 def inspect_installation(root: Path, origin: str = 'explicit') -> Installation:
     root = Path(root).absolute()
     reject_links(root)
-    if (not inside(root, 'Wuthering Waves.exe').is_file()
-            or not inside(root, 'Client/Content/Paks').is_dir()):
-        raise ValueError(f'Нет признаков установки Wuthering Waves: {root}')
-    # An executable's UE engine version is not necessarily the game client version.
-    return Installation(root.resolve(), [origin])
+    # Since 3.8 the Steam folder holds the Kuro launcher and the game sits in NESTED_GAME below it.
+    for folder in (root, root / NESTED_GAME):
+        if inside(folder, 'Wuthering Waves.exe').is_file() and inside(folder, 'Client/Content/Paks').is_dir():
+            reject_links(folder)
+            # An executable's UE engine version is not necessarily the game client version.
+            return Installation(folder.resolve(), [origin])
+    raise ValueError(f'Нет признаков установки Wuthering Waves: {root}')
 
 
 def system_locations() -> tuple[list[Path], list[Path], list[str]]:

@@ -19,7 +19,7 @@ from .editor import CATEGORIES
 from .editor_worker import EditorJob
 from .native_helper import helper_main
 from .desktop_pages import ProductPageMixin
-from .native_launch import RESOURCE
+from .native_launch import resources_label
 from .play_page import PlayPageMixin
 from .provider_page import ProviderPageMixin
 from .portable import PathManager, WorkspaceDiscoveryService
@@ -228,7 +228,7 @@ class EditorWindow(PlayPageMixin, ProviderPageMixin, ProductPageMixin, QMainWind
         self.more_button.setMenu(more_menu)
         header_layout.addWidget(self.more_button)
         header_layout.addStretch(1)
-        badge = QLabel('РЕСУРСЫ ' + RESOURCE.rsplit('/', 1)[-1])
+        badge = QLabel('РЕСУРСЫ ' + resources_label(self.path_manager.game_path() if self.path_manager else None))
         badge.setObjectName('resourceBadge')
         header_layout.addWidget(badge, 0, Qt.AlignVCenter)
         outer.addWidget(header)

@@ -21,6 +21,9 @@ MODEL = 'gpt-6-luna'
 # all within 1.5%. Four points and three numbers: new kinds of text may differ, and the gap check guards them.
 TOKENS_PER_CHAR, TOKENS_PER_ITEM, TOKENS_PER_REQUEST = 0.72, 24, 400
 BATCH_ITEMS = 150
+ATTEMPTS, SPLIT = 2, 2
+# Requests for halves and quarters of one batch refused twice: (2 + 4) * ATTEMPTS. The token cap still binds.
+SPLIT_REQUESTS = 12
 
 
 def relay_provider(key_env: str | None = None, key_getter=None):
@@ -62,9 +65,11 @@ def check_go(preview: dict, *, expect_requests: int, expect_cells: int, token_ca
 def send(core: TranslationDB, wave: str | None, *, run_id: str, token_cap: int, requests: int, key_env: str | None = None,
          changed_since: int | None = None, provider=None) -> dict:
     provider = provider or relay_provider(key_env)
-    engine = TranslationEngine(core, provider, scenes=True, wave=wave, attempts=2, interval=1, changed_since=changed_since)
+    engine = TranslationEngine(core, provider, scenes=True, wave=wave, attempts=ATTEMPTS, interval=1, changed_since=changed_since,
+                               split=SPLIT)
     spent_requests = core.db.execute('SELECT count(*) FROM usage WHERE run_id=?', (run_id,)).fetchone()[0]
-    budget = Budget(allowed=True, max_requests=spent_requests + requests * 2, token_cap=token_cap, tokens_per_char=TOKENS_PER_CHAR,
+    budget = Budget(allowed=True, max_requests=spent_requests + requests * ATTEMPTS + SPLIT_REQUESTS, token_cap=token_cap,
+                    tokens_per_char=TOKENS_PER_CHAR,
                     tokens_per_item=TOKENS_PER_ITEM, tokens_per_request=TOKENS_PER_REQUEST)
     return engine.run(run_id, batch_size=BATCH_ITEMS, budget=budget)
 

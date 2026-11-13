@@ -30,7 +30,7 @@ import tempfile
 import uuid
 
 from wuwaru.discovery import STEAM_APP_ID, discover
-from wuwaru.native_launch import (MOUNT, MOUNT_STEM, PAK_RELATIVE, accepted_fingerprints, fingerprint,
+from wuwaru.native_launch import (MOUNT_STEM, accepted_fingerprints, fingerprint, mount_path, pak_path,
                                   game_processes, process_names, read_bounded, replace_atomic,
                                   update_guard, with_entry, without_entry)
 from wuwaru.native_package import sha256
@@ -393,8 +393,8 @@ def _run(request: Path, done: list[dict], discover_roots, running, guard) -> Non
         raise ValueError('Корень игры из запроса не совпадает с найденной установкой')
     operations = data['operations']
     names = [op['op'] for op in operations]
-    mount = inside(game, MOUNT)
-    target = inside(game, PAK_RELATIVE)
+    mount = mount_path(game)
+    target = pak_path(game)
     if not target.parent.is_dir():
         raise ValueError('Нет папки пакетов Lang_en/Base')
 

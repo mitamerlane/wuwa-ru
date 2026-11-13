@@ -82,3 +82,25 @@ class DiscoveryTests(FixtureCase):
         result = discover(steam_roots=[steam], system=False)
         self.assertFalse(result.installations)
         self.assertTrue(result.warnings)
+
+
+class NestedLayoutTests(FixtureCase):
+    """Since 3.8 the Steam folder holds the Kuro launcher and the game one level down."""
+
+    def test_the_game_under_the_launcher_folder_is_the_installation(self):
+        top = self.home / 'steamapps/common/Wuthering Waves'
+        game = fixture(top / 'Wuthering Waves Game')
+        (top / 'launcher.exe').write_bytes(b'synthetic, not executable')
+        (top / 'Client/Saved/Resources/3.7.0/Mount').mkdir(parents=True)  # leftovers of the old layout
+        self.assertEqual(inspect_installation(top).root, game.resolve())
+        self.assertEqual(inspect_installation(game).root, game.resolve())
+        (self.home / 'steamapps/appmanifest_3513350.acf').write_text(
+            '"AppState" { "appid" "3513350" "installdir" "Wuthering Waves" "buildid" "77" }', encoding='utf-8')
+        found = discover(steam_roots=[self.home], system=False).installations
+        self.assertEqual([(item.root, item.steam_build_id) for item in found], [(game.resolve(), '77')])
+
+    def test_a_folder_without_the_game_is_still_refused(self):
+        top = self.home / 'Wuthering Waves'
+        (top / 'Wuthering Waves Game').mkdir(parents=True)
+        with self.assertRaises(ValueError):
+            inspect_installation(top)

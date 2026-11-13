@@ -600,3 +600,18 @@ class ElevationTests(HelperCase):
 
 if __name__ == '__main__':
     unittest.main()
+
+
+class OtherVersionTests(HelperCase):
+    def test_the_helper_writes_into_the_version_folder_it_finds(self):
+        base = self.game / native_launch.RESOURCES
+        (base / '3.7.0').rename(base / '3.8.0')
+        self.mount = native_launch.mount_path(self.game)
+        self.pak = native_launch.pak_path(self.game)
+        plan = native_launch.plan_play(self.state(), self.native)
+        self.assertEqual([op['op'] for op in plan], ['install_package', 'apply_mount'])
+        self.assertTrue(self.execute(self.request(plan))['ok'])
+        self.assertEqual(self.pak.read_bytes(), PAK)
+        self.assertEqual(self.pak.parent, base / '3.8.0/Lang_en/Base')
+        self.assertTrue(native_launch.has_entry(self.mount.read_bytes()))
+        self.assertFalse((base / '3.7.0').exists())

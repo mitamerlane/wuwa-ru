@@ -301,3 +301,81 @@ class LaunchStateTests(FixtureCase):
 
 if __name__ == '__main__':
     unittest.main()
+
+
+class ResourceVersionTests(LaunchStateTests):
+    """The resources folder is named after the game version: found, never assumed."""
+
+    locals().update({name: None for name in dir(LaunchStateTests) if name.startswith('test')})
+
+    def move_to(self, version):
+        base = self.game / native_launch.RESOURCES
+        (base / '3.7.0').rename(base / version)
+        return base / version
+
+    def test_another_version_folder_is_found(self):
+        folder = self.move_to('3.8.0')
+        state = self.inspect()
+        self.assertEqual(state.phase, Phase.READY, state.reasons)
+        self.assertEqual(state.resources, '3.8.0')
+        self.assertEqual(state.installed_sha256, self.package['pak_sha256'])
+        self.assertEqual(native_launch.mount_path(self.game), folder / 'Mount/MountLang_en.txt')
+        self.assertEqual(native_launch.pak_path(self.game), folder / 'Lang_en/Base' / native_launch.PAK_NAME)
+
+    def test_two_version_folders_are_not_guessed(self):
+        other = self.game / native_launch.RESOURCES / '3.8.0/Mount'
+        other.mkdir(parents=True)
+        (other / 'MountLang_en.txt').write_bytes(mount_bytes())
+        state = self.inspect()
+        self.assertEqual(state.phase, Phase.NO_GAME)
+        self.assertIn('3.7.0, 3.8.0', ' '.join(state.reasons))
+        with self.assertRaises(ValueError):
+            native_launch.mount_path(self.game)
+
+    def test_folders_without_the_language_mount_do_not_count(self):
+        (self.game / native_launch.RESOURCES / '3.8.0/Mount').mkdir(parents=True)
+        (self.game / native_launch.RESOURCES / 'Video').mkdir()
+        (self.game / native_launch.RESOURCES / '3.9.0x/Mount').mkdir(parents=True)
+        self.assertEqual(self.inspect().resources, '3.7.0')
+
+    def test_no_version_folder_is_no_game(self):
+        self.mount.unlink()
+        state = self.inspect()
+        self.assertEqual((state.phase, state.resources), (Phase.NO_GAME, None))
+        self.assertIn('Нет MountLang_en.txt', state.reasons)
+
+
+class NestedInstallTests(FixtureCase):
+    """Steam folder with the Kuro launcher on top and the game in «Wuthering Waves Game»."""
+
+    def setUp(self):
+        super().setUp()
+        self.apps = self.home / 'steamapps'
+        self.top = self.apps / 'common/Wuthering Waves'
+        self.game = fixture(self.top / 'Wuthering Waves Game')
+        (self.top / 'launcher.exe').write_bytes(b'synthetic, not executable')
+        (self.apps / 'appmanifest_3513350.acf').write_text(
+            '"AppState" { "appid" "3513350" "StateFlags" "4" "BytesToDownload" "0" "BytesDownloaded" "0" '
+            '"BytesToStage" "0" "BytesStaged" "0" }', encoding='utf-8')
+
+    def test_the_steam_guard_reads_the_library_of_the_launcher_folder(self):
+        native_launch.update_guard(self.game)
+        (self.apps / 'downloading/3513350').mkdir(parents=True)
+        with self.assertRaisesRegex(ValueError, 'Steam update'):
+            native_launch.update_guard(self.game)
+
+    def test_a_game_outside_a_steam_library_is_still_refused(self):
+        with self.assertRaises(ValueError):
+            native_launch.update_guard(fixture(self.home / 'elsewhere/Wuthering Waves Game'))
+
+    def test_the_launcher_above_the_game_counts_as_running(self):
+        launcher = [{'ProcessId': 1, 'Name': 'launcher.exe', 'ExecutablePath': str(self.top / 'launcher.exe')}]
+        other = [{'ProcessId': 2, 'Name': 'launcher.exe', 'ExecutablePath': str(self.home / 'Epic/launcher.exe')}]
+        with mock.patch.object(native_launch, 'consumers', return_value=launcher + other):
+            self.assertEqual(native_launch.game_processes(self.game), launcher)
+
+    def test_the_elevated_kuro_launcher_is_known_by_name(self):
+        hidden = [{'ProcessId': 3, 'Name': name, 'ExecutablePath': None}  # Windows hides an elevated process's path
+                  for name in ('launcher_main.exe', 'launcher_updater.exe', 'KRInstallExternal.exe')]
+        with mock.patch.object(native_launch, 'consumers', return_value=hidden):
+            self.assertEqual(native_launch.game_processes(self.game), hidden)

@@ -19,6 +19,7 @@ from .editor_worker import EditorJob
 from .play_page import (BODY, CREAM, DIM, GOLD, GROUND, HEADING, KINDS, MUTED, SOFT, TEXT, CutButton, CutPanel,
                         PlayPageMixin, _label, can_remove, font, kind_label, register_fonts, rgba)
 from .portable import PathManager
+from .delta_ui import DeltaUpdateMixin
 from .update_ui import UpdateMixin
 
 WIDTH, HEIGHT = 1040, 640
@@ -123,7 +124,7 @@ class Outline(QWidget):
         painter.drawRect(QRectF(self.rect()).adjusted(0.5, 0.5, -0.5, -0.5))
 
 
-class LauncherWindow(UpdateMixin, PlayPageMixin, QWidget):
+class LauncherWindow(UpdateMixin, DeltaUpdateMixin, PlayPageMixin, QWidget):
     def __init__(self, workspace: Path, path_manager: PathManager | None = None):
         super().__init__()
         register_fonts()
@@ -164,6 +165,7 @@ class LauncherWindow(UpdateMixin, PlayPageMixin, QWidget):
         self.stack = QStackedWidget()
         self.play_page_widget = self.make_play_page()
         self._compact_play_page()
+        self.make_delta_status()
         self.stack.addWidget(self.play_page_widget)
         self.settings_page = self.make_launcher_settings()
         self.stack.addWidget(self.settings_page)
@@ -178,6 +180,7 @@ class LauncherWindow(UpdateMixin, PlayPageMixin, QWidget):
             self.discover_game()
         self.refresh_play()
         self.schedule_update_check()
+        self.schedule_delta_update()
 
     # -- layout --------------------------------------------------------------------------------
 
@@ -357,6 +360,8 @@ class LauncherWindow(UpdateMixin, PlayPageMixin, QWidget):
         job.deleteLater()
         if not self.last_error and callback:
             callback(result)
+        elif self.last_error and action == 'delta-update':
+            self.delta_failed(self.last_error)
         elif self.last_error and action.startswith('native-'):
             self.play_failed(action, self.last_error)
         elif self.last_error:

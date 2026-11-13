@@ -10,7 +10,7 @@ from threading import Event
 from .flow_context import WAVES, text_kind
 from .glossary import Glossary
 from .manifest import check_cancel
-from .providers import (OpenAICompatibleProvider, ProviderError, SYSTEM, TranslationItem,
+from .providers import (ANSWER_FAILURES, OpenAICompatibleProvider, ProviderError, SYSTEM, TranslationItem,
                         TranslationProvider, payload)
 from .translation_db import TranslationDB, digest
 from .validation import needs_translation, validate
@@ -21,6 +21,7 @@ SCENE_TAIL = 1 << 40  # Cursor values from here on are records outside any scene
 PENDING = ("active=1 AND manual=0 AND (target IS NULL OR translated_hash<>source_hash OR status IN ('INVALID','NEEDS_REVIEW')) "
            "AND NOT (coalesce(provider,'') LIKE 'reuse:%' AND target IS NOT NULL "
            "AND translated_hash=source_hash AND status<>'INVALID')")
+UNANSWERED = 'unanswered:'  # Provider mark of a line the model refused at every batch size; it stays English and INVALID.
 FILLER_REPEATS = 8  # "Test Test …" made the model repeat itself past the timeout; a real "Ha ha ha ha!" is shorter.
 
 
@@ -57,9 +58,13 @@ class Budget:
 class TranslationEngine:
     def __init__(self, core: TranslationDB, provider: TranslationProvider, *, attempts: int = 3,
                  interval: float = 1, sleep=time.sleep, clock=time.monotonic, selection=None, scenes: bool = False,
-                 wave: str | None = None, changed_since: int | None = None):
+                 wave: str | None = None, changed_since: int | None = None, split: int = 0):
         if not 1 <= attempts <= 10 or not math.isfinite(interval) or interval < 0:
             raise ValueError('Некорректные retry/rate limit')
+        # Halving levels for a batch whose answer is refused after every attempt; 0 stops the run as before.
+        if split not in (0, 1, 2):
+            raise ValueError('Деление batch: 0..2 уровня')
+        self.split = split
         self.core, self.provider = core, provider
         self.scenes = scenes
         if wave is not None and (not scenes or wave not in WAVES):
@@ -349,15 +354,16 @@ class TranslationEngine:
                         self.core.db.execute("UPDATE runs SET state='PAUSED' WHERE id=?", (run_id,))
                     return dict(self.core.db.execute('SELECT * FROM runs WHERE id=?', (run_id,)).fetchone())
                 if pending:
-                    response = self.request(run_id, pending, budget, cancelled)
-                    resolved.update({key: (target, self.provider.identity) for key, target in response.items()})
+                    last_attempt = self.core.db.execute('SELECT coalesce(max(attempt),0) FROM usage').fetchone()[0]
+                    resolved.update(self._answer(run_id, pending, budget, cancelled))
                     session_chars += sum(len(item.source) for item in pending)
                     session_items += len(pending)
                     session_requests += 1
-                    used_now = self._reported_tokens(getattr(self.provider, 'last_usage', None))
-                    session_tokens += used_now or 0
+                    # Every attempt of this batch: refused answers and halves were paid for as well.
+                    used_now, missing = self._usage_since(run_id, last_attempt)
+                    session_tokens += used_now
                     stop = None
-                    if budget.token_cap is not None and used_now is None:
+                    if budget.token_cap is not None and missing:
                         stop = 'USAGE_MISSING'
                     elif (budget.tokens_per_char and session_chars >= budget.min_chars_for_gap and
                           session_tokens > ESTIMATE_GAP * (session_chars * budget.tokens_per_char
@@ -377,7 +383,7 @@ class TranslationEngine:
                         if current['manual'] or current['source_hash'] != before['source_hash'] or not current['active']:
                             continue
                         target, provider = resolved[keys[before['seq']]]
-                        errors = validate(before['source'], target)
+                        errors = validate(before['source'], target) or (['UNANSWERED'] if provider.startswith(UNANSWERED) else [])
                         # JSON can contain escaped lone surrogates, which SQLite cannot store.
                         try:
                             target.encode('utf-8')
@@ -405,6 +411,33 @@ class TranslationEngine:
             raise
         return dict(self.core.db.execute('SELECT * FROM runs WHERE id=?', (run_id,)).fetchone(),
                     tokens_spent=self._tokens_spent(run_id))
+
+    def _answer(self, run_id: str, items: list[TranslationItem], budget: Budget, cancelled: Event | None,
+                depth: int = 0) -> dict[str, tuple[str, str]]:
+        """Targets by key. With split, a refused batch goes in halves; what is refused at the last level stays English."""
+        try:
+            return {key: (target, self.provider.identity)
+                    for key, target in self.request(run_id, items, budget, cancelled).items()}
+        except ProviderError as exc:
+            if not self.split or exc.failure not in ANSWER_FAILURES:
+                raise
+            if depth == self.split or len(items) == 1:
+                return {item.key: (item.source, UNANSWERED + exc.failure) for item in items}
+            if budget.token_cap is not None and self._tokens_spent(run_id) >= budget.token_cap:
+                raise
+        half = len(items) // 2
+        return {**self._answer(run_id, items[:half], budget, cancelled, depth + 1),
+                **self._answer(run_id, items[half:], budget, cancelled, depth + 1)}
+
+    def _usage_since(self, run_id: str, attempt: int) -> tuple[int, bool]:
+        """Tokens of the attempts after this one, and whether a received answer came without its usage."""
+        tokens, missing = 0, False
+        for state, usage in self.core.db.execute('SELECT state,actual_usage_json FROM usage WHERE run_id=? AND attempt>?',
+                                                 (run_id, attempt)):
+            reported = self._reported_tokens(json.loads(usage) if usage else None)
+            tokens += reported or 0
+            missing |= state == 'RECEIVED' and reported is None
+        return tokens, missing
 
     @staticmethod
     def _reported_tokens(usage) -> int | None:

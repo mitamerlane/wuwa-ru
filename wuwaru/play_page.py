@@ -21,7 +21,7 @@ from PySide6.QtWidgets import (QApplication, QDialog, QFileDialog, QHBoxLayout, 
 
 from . import native_helper, native_launch, native_package
 from .native_package import table_label
-from .native_launch import MOUNT, PAK_RELATIVE, REBUILD_MISSING, RESOURCE, LaunchState, Phase
+from .native_launch import PAK_NAME, REBUILD_MISSING, RESOURCES, LaunchState, Phase
 from .paths import inside
 from .portable import DEFAULT_NATIVE_KINDS, NATIVE_KINDS
 from .steam_art import find_hero
@@ -99,8 +99,11 @@ def remove_block_reason(state: LaunchState | None) -> str | None:
     records = [record for record in (state.package, state.installed_record) if record is not None]
     if not records or state.installed_sha256 in {record.get('pak_sha256') for record in records}:
         return None  # without both records the helper keeps the PAK and removes only our line
-    return ('Перевод в игре не совпадает с записями приложения — удали файл вручную: '
-            + str(Path(state.game) / PAK_RELATIVE))
+    try:
+        installed = native_launch.pak_path(Path(state.game))
+    except (OSError, ValueError):
+        installed = Path(state.game) / RESOURCES / (state.resources or '') / 'Lang_en/Base' / PAK_NAME
+    return 'Перевод в игре не совпадает с записями приложения — удали файл вручную: ' + str(installed)
 
 
 def can_remove(state: LaunchState | None) -> bool:
@@ -227,7 +230,7 @@ def panel_for(state: LaunchState | None, message: str = '') -> Panel:
     built = set(package.get('kinds') or ())
     waves = tuple((name, bool(built) and set(kinds) <= built) for name, kinds in WAVE_ROWS)
     reasons = '\n'.join(state.reasons)
-    resources = RESOURCE.rsplit('/', 1)[-1]
+    resources = state.resources or '—'
     phase = state.phase
     if phase in (Phase.READY, Phase.NEEDS_INSTALL):
         chip = ('актуален', SUCCESS) if phase is Phase.READY else ('не установлен', AMBER)
@@ -1007,7 +1010,7 @@ class PlayPageMixin:
         """Plan from the inspected state and write the request with the Mount bytes read just now."""
         native = self.path_manager.native
         try:
-            mount = native_launch.read_bounded(inside(state.game, MOUNT))
+            mount = native_launch.read_bounded(native_launch.mount_path(state.game))
             plan = plan_for(state)
             return plan, native_helper.write_request(native, state.game, plan, mount)
         except (OSError, ValueError) as exc:

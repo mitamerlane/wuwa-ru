@@ -85,6 +85,12 @@ class EditorJob(QThread):
             if self.action.startswith('native-'):
                 self.result.emit(self.native(self.action, self.arguments))
                 return
+            if self.action == 'delta-update':
+                from .delta_updates import run_delta_update
+                from .portable import PathManager
+                self.result.emit(run_delta_update(PathManager(Path(self.arguments['data_root'])), self.workspace,
+                                                  cancelled=self.cancelled.is_set))
+                return
             if self.action == 'api-models':
                 from .provider_config import ProviderProfile
                 profile = ProviderProfile(**self.arguments['profile'])
@@ -266,6 +272,12 @@ class EditorJob(QThread):
         from .paths import inside
         native = Path(args['native'])
         game = Path(args['game']) if args.get('game') else None
+        if game is not None:  # a saved launcher folder means the game below it, never its leftovers
+            from .discovery import inspect_installation
+            try:
+                game = inspect_installation(game).root
+            except (OSError, ValueError):
+                pass
         if action == 'native-inspect':
             key, error = args.get('key'), None
             if key is None:
@@ -278,7 +290,7 @@ class EditorJob(QThread):
             check_cancel(self.cancelled)
             return native_launch.inspect(game, native, key, input_error=error, build_id=args.get('build_id'))
         if action == 'native-build':
-            installed = inside(game, native_launch.PAK_RELATIVE) if game is not None else None
+            installed = native_launch.pak_path(game) if game is not None else None
             return native_package.build_package(Path(args['project_db']), native, tuple(args['kinds']),
                                                 cancelled=self.cancelled, installed=installed)
         if action == 'native-inputs':

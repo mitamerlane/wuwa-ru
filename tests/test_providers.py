@@ -59,6 +59,29 @@ class ProviderTests(FixtureCase):
             with self.assertRaises(ProviderError):
                 self.call(FakeOpener(raw))
 
+    def test_a_broken_answer_names_its_reason_but_never_its_text(self):
+        def raw(content, reason='stop'):
+            return json.dumps({'choices': [{'finish_reason': reason, 'message': {'content': content}}],
+                               'usage': {'prompt_tokens': 7, 'completion_tokens': 5}}).encode()
+
+        cases = [(raw(json.dumps({'translations': [{'key': 'key', 'target': 'секрет'}]}), 'length'), 'incomplete', False),
+                 (raw('{"translations": [{"key": "key", "target": "секрет'), 'invalid_json', True),
+                 (raw(json.dumps({'translations': [], 'note': 'секрет'})), 'invalid_root', True),
+                 (raw(json.dumps({'translations': [{'key': 'key', 'target': None, 'note': 'секрет'}]})), 'invalid_entry', True),
+                 (raw(json.dumps({'translations': [{'key': 'секрет', 'target': 'секрет'}]})), 'mismatched_ids', True),
+                 (json.dumps({'error': 'секрет'}).encode(), 'invalid_envelope', False)]
+        for response, reason, retryable in cases:
+            with self.subTest(reason=reason):
+                with self.assertRaises(ProviderError) as caught:
+                    self.call(FakeOpener(response))
+                self.assertEqual((caught.exception.failure, caught.exception.retryable), (reason, retryable))
+                self.assertIn(reason, str(caught.exception))
+                self.assertEqual(self.provider.last_usage['failure'], reason)
+                self.assertNotIn('секрет', str(caught.exception) + json.dumps(self.provider.last_usage, ensure_ascii=False))
+        self.assertEqual(self.provider.last_usage['input_tokens'], None)
+        self.call(FakeOpener(self.envelope({'translations': [{'key': 'key', 'target': 'Привет {Player}'}]})))
+        self.assertNotIn('failure', self.provider.last_usage)
+
     def test_http_retry_policy_never_includes_response_body(self):
         for code in (400, 401, 429, 500):
             error = urllib.error.HTTPError('https://example.invalid', code, 'private response',

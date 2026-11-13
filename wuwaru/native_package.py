@@ -33,6 +33,11 @@ SOURCE_SHA256 = '014b09753e986bf04ca14ce953351a84c8f0348d95ac1adf16e25c26b7182a9
 TABLE_REPOSITORY = 'Loping151/WWUIResourcesFull'
 TABLE_PATH = 'Text/ConfigDB/en/lang_multi_text.db'
 TABLE_RECORD = 'table.json'
+# While that source has no table for a new game version, the same rows are built from the public text source
+# (table_fetch.build): its MultiText.json of 3.7.5 equals the pinned table row for row, in the same order.
+TEXT_REPOSITORY = 'Arikatsu/WutheringWaves_Data'
+TEXT_PATH = 'Textmaps/en/multi_text/MultiText.json'
+TABLE_DDL = 'CREATE TABLE `MultiText` (`Id` TEXT UNIQUE PRIMARY KEY NOT NULL, `Content` TEXT, `RedirectDbIndex` INT)'
 TABLE_MAX = 512 * 1024 * 1024
 PINNED_TABLE = dict(repository=TABLE_REPOSITORY, path=TABLE_PATH, revision='30b665d7e783f8aedd8a9c2c4f17b7555eb2b10d',
                     blob='15e99ad486a7dc09d2edbcc0f3a10e81b7f94c8b', size=45834240, sha256=SOURCE_SHA256,
@@ -213,12 +218,18 @@ _RECORD_FIELDS = ('repository', 'path', 'revision', 'blob', 'size', 'sha256', 'd
 
 
 def check_record(record) -> dict:
-    """Provenance of a table: the pinned repository and file, a full revision, its Git blob, size and SHA-256."""
-    if not isinstance(record, dict) or set(record) != set(_RECORD_FIELDS):
+    """Provenance of a table: the pinned repository and file, a full revision, its Git blob, size and SHA-256.
+
+    A table built from the public text source names that source instead and adds `source_blob`, the Git blob of
+    the MultiText.json it was built from; `blob`, `size` and `sha256` are always those of the table file."""
+    built = isinstance(record, dict) and record.get('repository') == TEXT_REPOSITORY
+    fields = _RECORD_FIELDS + ('source_blob',) * built
+    if not isinstance(record, dict) or set(record) != set(fields):
         raise ValueError('Описание таблицы неполное или с лишними полями')
-    if record['repository'] != TABLE_REPOSITORY or record['path'] != TABLE_PATH:
+    if (record['repository'], record['path']) not in ((TABLE_REPOSITORY, TABLE_PATH), (TEXT_REPOSITORY, TEXT_PATH)):
         raise ValueError(f'Таблица не из закреплённого источника {TABLE_REPOSITORY}/{TABLE_PATH}')
-    if not all(isinstance(record[name], str) and _HEX40.fullmatch(record[name]) for name in ('revision', 'blob')):
+    if not all(isinstance(record[name], str) and _HEX40.fullmatch(record[name]) for name in fields
+               if name in ('revision', 'blob', 'source_blob')):
         raise ValueError('Ревизия и Git blob таблицы должны быть полными SHA-1')
     if not isinstance(record['sha256'], str) or not _HEX64.fullmatch(record['sha256']):
         raise ValueError('SHA-256 таблицы недопустим')
@@ -227,7 +238,7 @@ def check_record(record) -> dict:
     for name, limit in (('data_version', 128), ('data_date', 64)):
         if record[name] is not None and (not isinstance(record[name], str) or len(record[name]) > limit):
             raise ValueError(f'Поле {name} недопустимо')
-    return {name: record[name] for name in _RECORD_FIELDS}
+    return {name: record[name] for name in fields}
 
 
 def table_record(native: Path) -> dict:
@@ -351,7 +362,8 @@ def install_table(table: Path, record: dict, native: Path) -> dict:
             stream.flush()
             os.fsync(stream.fileno())
         os.replace(temporary, path)
-    _journal(native, {'event': 'install_table', 'revision': record['revision'], 'blob': record['blob'],
+    _journal(native, {'event': 'install_table', 'repository': record['repository'], 'revision': record['revision'],
+                      'blob': record['blob'],
                       'sha256': record['sha256'], 'previous_sha256': previous})
     return record
 

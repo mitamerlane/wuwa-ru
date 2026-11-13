@@ -22,10 +22,23 @@ class TranslationItem:
 
 
 class ProviderError(RuntimeError):
-    def __init__(self, message: str, *, retryable: bool = False, retry_after: float = 0):
+    def __init__(self, message: str, *, retryable: bool = False, retry_after: float = 0, failure: str | None = None):
         super().__init__(message)
         self.retryable = retryable
         self.retry_after = retry_after
+        self.failure = failure  # Why a delivered answer was refused (ANSWER_FAILURES or 'invalid_envelope'); never its text.
+
+
+# A complete answer with broken JSON or keys: the model is not deterministic, asking again usually works.
+RETRY_FAILURES = frozenset({'invalid_json', 'invalid_root', 'invalid_entry', 'mismatched_ids'})
+# Answers that a smaller batch can fix; 'incomplete' (finish_reason other than stop) repeats on the same input.
+ANSWER_FAILURES = RETRY_FAILURES | {'incomplete'}
+
+
+class _Refused(ValueError):
+    def __init__(self, failure: str):
+        super().__init__(failure)
+        self.failure = failure
 
 
 class TranslationProvider(Protocol):
@@ -137,26 +150,40 @@ class OpenAICompatibleProvider:
             self.last_usage['input_tokens'] = self.last_usage.get('prompt_tokens')
             self.last_usage['output_tokens'] = self.last_usage.get('completion_tokens')
         try:
-            choice = envelope['choices'][0]
-            if choice['finish_reason'] != 'stop':
-                raise ValueError('incomplete response')
-            content = json.loads(choice['message']['content'])
-            if not isinstance(content, dict) or set(content) != {'translations'}:
-                raise ValueError('invalid root')
-            values = content['translations']
-            if not isinstance(values, list):
-                raise ValueError('invalid translations')
-            result = {}
-            for entry in values:
-                if (not isinstance(entry, dict) or set(entry) != {'key', 'target'} or not isinstance(entry['key'], str) or
-                        not isinstance(entry['target'], str) or entry['key'] in result):
-                    raise ValueError('invalid entry')
-                result[entry['key']] = entry['target']
-            if set(result) != {i.key for i in items}:
-                raise ValueError('mismatched IDs')
-            return result
+            return self._parse(envelope, items)
+        except _Refused as refused:
+            failure = refused.failure
         except (ValueError, KeyError, TypeError, IndexError):
-            raise ProviderError('Некорректная структура ответа API') from None
+            failure = 'invalid_envelope'
+        # The reason only: the answer itself may be long, private or a prompt echo, and stays out of logs.
+        if isinstance(self.last_usage, dict):
+            self.last_usage['failure'] = failure
+        raise ProviderError(f'Некорректная структура ответа API ({failure})', failure=failure,
+                            retryable=failure in RETRY_FAILURES)
+
+    @staticmethod
+    def _parse(envelope, items: list[TranslationItem]) -> dict[str, str]:
+        choice = envelope['choices'][0]
+        reason, text = choice['finish_reason'], choice['message']['content']
+        if reason != 'stop':
+            raise _Refused('incomplete')
+        if not isinstance(text, str):
+            raise ValueError('no content')
+        try:
+            content = json.loads(text)
+        except ValueError:
+            raise _Refused('invalid_json') from None
+        if not isinstance(content, dict) or set(content) != {'translations'} or not isinstance(content['translations'], list):
+            raise _Refused('invalid_root')
+        result = {}
+        for entry in content['translations']:
+            if (not isinstance(entry, dict) or set(entry) != {'key', 'target'} or not isinstance(entry['key'], str) or
+                    not isinstance(entry['target'], str) or entry['key'] in result):
+                raise _Refused('invalid_entry')
+            result[entry['key']] = entry['target']
+        if set(result) != {i.key for i in items}:
+            raise _Refused('mismatched_ids')
+        return result
 
     def list_models(self, *, allow_network=False):
         if not allow_network:
