@@ -49,6 +49,21 @@ class PublicExportTests(unittest.TestCase):
         self.assertEqual({hit.split(':')[0] for hit in hits}, {'wuwaru/x.py', 'wuwaru/key.txt', 'data/game.pak'})
         self.assertIn('wuwaru/x.py:1: GitHub token', hits)
 
+    def test_personal_markers_come_from_the_machine_and_spare_no_file(self):
+        home = TMP / 'Users' / 'Synthetic-Login'
+        (home / '.wuwaru-release').mkdir(parents=True)
+        (home / '.wuwaru-release' / 'personal.txt').write_text('# mine\nsynthetic.mail\n\n', encoding='utf-8')
+        with mock.patch.object(export.Path, 'home', return_value=home):
+            markers = export.personal()
+        path = TMP / 'tool.py'
+        path.write_bytes(b"A = r'C:\\Users\\synthetic-login\\x'\nB = 'Synthetic.Mail@example.com'\nC = 'synthetic-login'\n")
+        hits = export.scan({'tools/public_export.py': path}, markers=markers)
+        self.assertEqual(hits, ['tools/public_export.py:1: personal path', 'tools/public_export.py:2: personal marker'])
+
+    def test_the_tool_itself_names_no_person(self):
+        source = Path(export.__file__).read_bytes()
+        self.assertEqual([label for pattern, label in export.personal() if pattern.search(source)], [])
+
     def test_export_refuses_a_folder_inside_the_repository(self):
         with self.assertRaises(SystemExit):
             export.export(export.ROOT / '.test-tmp' / 'out')

@@ -39,12 +39,12 @@ SECRETS = [
     (re.compile(rb'(?i)bearer\s+[A-Za-z0-9._\-]{24,}'), 'bearer token'),
     (re.compile(rb'(?i)(api[_-]?key|secret|token|password)\s*[:=]\s*["\'][A-Za-z0-9_\-./+]{16,}["\']'),
      'assigned secret'),
-    (re.compile(rb'(?i)C:\\\\?Users\\\\?dizzb'), 'personal path'),
-    (re.compile(rb'(?i)dizzboom'), 'personal e-mail'),
 ]
 # Reviewed false positives, exact text only. The experiment's approval word is a fixed string the user
 # types to confirm a run (printed in its own instructions), not a credential.
 ALLOWED = frozenset({('tools/native_pak_experiment.py', b"TOKEN = '8c247bd1634f4ff09b3a5f8b6a2d10e7'")})
+# Words that name the developer (e-mail, nickname), one per line, kept beside the signing key and never in Git.
+PERSONAL = Path('.wuwaru-release') / 'personal.txt'
 FORBIDDEN_NAMES = re.compile(r'(?i)(^|/)(\.env[^/]*|.*\.(pem|key|pfx|p12|sqlite3?|db|pak|sig))$')
 MAX_FILE = 16 * 1024 * 1024
 
@@ -91,7 +91,23 @@ def overlay() -> dict[str, Path]:
     return {path.relative_to(base).as_posix(): path for path in sorted(base.rglob('*')) if path.is_file()}
 
 
-def scan(files: dict[str, Path]) -> list[str]:
+def personal() -> list[tuple[re.Pattern[bytes], str]]:
+    """What would name the developer in an exported file: read from this machine, never written in the code."""
+    home = Path.home()
+    found = [(re.compile(rb'(?i)Users[\\/]+' + re.escape(home.name.encode('utf-8'))), 'personal path')]
+    try:
+        lines = (home / PERSONAL).read_text(encoding='utf-8').splitlines()
+    except FileNotFoundError:
+        lines = []
+    for line in lines:
+        word = line.strip()
+        if word and not word.startswith('#'):
+            found.append((re.compile(b'(?i)' + re.escape(word.encode('utf-8'))), 'personal marker'))
+    return found
+
+
+def scan(files: dict[str, Path], markers: list[tuple[re.Pattern[bytes], str]] | None = None) -> list[str]:
+    own = personal() if markers is None else markers
     hits = []
     for name, path in files.items():
         if FORBIDDEN_NAMES.search(name):
@@ -102,9 +118,9 @@ def scan(files: dict[str, Path]) -> list[str]:
             hits.append(f'{name}: слишком большой ({size // 2**20} МиБ)')
             continue
         data = path.read_bytes()
-        for pattern, label in SECRETS:
-            if name == 'tools/public_export.py':
-                break  # the patterns themselves
+        for pattern, label in [*SECRETS, *own]:
+            if name == 'tools/public_export.py' and (pattern, label) not in own:
+                continue  # the secret patterns themselves; personal markers are checked here too
             for match in pattern.finditer(data):
                 if (name, match.group(0)) in ALLOWED:
                     continue
