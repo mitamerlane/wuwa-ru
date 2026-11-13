@@ -21,6 +21,9 @@ RAW = 'https://raw.githubusercontent.com/' + package.TABLE_REPOSITORY + '/'
 MAX_JSON = 16 * 1024 * 1024
 SHA = re.compile(r'[0-9a-f]{40}')
 NAME = re.compile(r'[\w.-]{1,100}')
+COMMITS = 30
+GAME_VERSION = re.compile(r'\d{1,3}\.\d{1,3}\.\d{1,3}')
+DATA_VERSION = re.compile(r'GameVer (\d{1,3}\.\d{1,3}\.\d{1,3}) \| ResVer \d{1,3}\.\d{1,3}\.\d{1,3} ')
 
 
 def _open(url):
@@ -180,3 +183,38 @@ def build(native: Path, revision: str, *, opener=_open) -> dict:
                       data_version=(message.splitlines() or [None])[0][:128] if isinstance(message, str) else None,
                       data_date=date[:64] if isinstance(date, str) else None, source_blob=entry['sha'])
         return package.install_table(staged, record, native)
+
+
+def find_revision(opener, game_version: str) -> str:
+    """Newest revision of the text source whose commit names this game version.
+
+    The source titles its commits by the data they hold ('GameVer 3.8.0 | ResVer 3.8.9 | …') and GitHub lists
+    them newest first; `game_version` is the name of the game's resources folder. A version the last COMMITS
+    commits of the file do not name is refused, never replaced by a neighbouring one."""
+    if not isinstance(game_version, str) or not GAME_VERSION.fullmatch(game_version):
+        raise ValueError('Версия игры неизвестна')
+    listing = _json(opener, f'https://api.github.com/repos/{package.TEXT_REPOSITORY}/commits?path='
+                    + urllib.parse.quote(package.TEXT_PATH, safe='/') + f'&per_page={COMMITS}')
+    if not isinstance(listing, list) or len(listing) > COMMITS:
+        raise ValueError('Недопустимый список ревизий GitHub')
+    for item in listing:
+        commit = item.get('commit') if isinstance(item, dict) else None
+        message = commit.get('message') if isinstance(commit, dict) else None
+        if not isinstance(message, str) or not isinstance(item.get('sha'), str) or not SHA.fullmatch(item['sha']):
+            raise ValueError('Недопустимая запись списка ревизий GitHub')
+        named = DATA_VERSION.match(message)
+        if named and named.group(1) == game_version:
+            return item['sha']
+    raise ValueError(f'В публичном тексте игры пока нет версии {game_version}')
+
+
+def update(native: Path, game_version: str, *, opener=_open) -> dict:
+    """Set `native` up with the table for this game version: {'record', 'changed'}.
+
+    The launcher's own way to a table after a game update. Nothing is downloaded when the table in place was
+    already built from the revision found. Whether it matches the installed client stays UNKNOWN."""
+    revision = find_revision(opener, game_version)
+    current = package.table_record(Path(native))
+    if current.get('repository') == package.TEXT_REPOSITORY and current.get('revision') == revision:
+        return {'record': current, 'changed': False}
+    return {'record': build(native, revision, opener=opener), 'changed': True}

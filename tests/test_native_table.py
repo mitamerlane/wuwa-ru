@@ -248,8 +248,9 @@ def text_json(rows) -> bytes:
 class FakeTextGitHub:
     """Arikatsu/WutheringWaves_Data at one revision: Textmaps/en/multi_text/MultiText.json."""
 
-    def __init__(self, data: bytes, *, served: bytes | None = None):
+    def __init__(self, data: bytes, *, served: bytes | None = None, commits=None):
         self.data, self.served, self.urls = data, data if served is None else served, []
+        self.commits = commits
         self.tree = {'root': [{'path': 'Textmaps', 'type': 'tree', 'sha': 't1'}],
                      't1': [{'path': 'en', 'type': 'tree', 'sha': 't2'}],
                      't2': [{'path': 'multi_text', 'type': 'tree', 'sha': 't3'}],
@@ -263,6 +264,8 @@ class FakeTextGitHub:
                                                      'tree': {'sha': 'root'}}}
         elif url.startswith(TEXT_API + '/git/trees/'):
             body = {'tree': self.tree[url.rsplit('/', 1)[1]], 'truncated': False}
+        elif url == TEXT_API + '/commits?path=Textmaps/en/multi_text/MultiText.json&per_page=30':
+            body = self.commits
         elif url == ('https://raw.githubusercontent.com/Arikatsu/WutheringWaves_Data/' + TEXT_REVISION +
                      '/Textmaps/en/multi_text/MultiText.json'):
             return io.BytesIO(self.served)
@@ -328,3 +331,60 @@ class BuildFromTextTests(TableCase):
                        dict(built, path=package.TABLE_PATH)):
             with self.subTest(sorted(record)), self.assertRaises(ValueError):
                 package.check_record(record)
+
+
+def listed(*items):
+    return [{'sha': sha, 'commit': {'message': message}} for sha, message in items]
+
+
+class TableForTheGameVersionTests(TableCase):
+    """The launcher takes the table itself: the newest text revision that names the game's version."""
+
+    ROWS = BuildFromTextTests.ROWS
+    COMMITS = listed(('d' * 40, 'GameVer 3.9.0 | ResVer 3.9.2 | Changelist 1 | Release'),
+                     (TEXT_REVISION, 'GameVer 3.8.0 | ResVer 3.8.9 | Changelist 2 | Release\n\nbody'),
+                     ('e' * 40, 'GameVer 3.8.0 | ResVer 3.8.6 | Changelist 3 | Release'),
+                     ('f' * 40, 'Update README'))
+
+    def github(self, commits=None):
+        return FakeTextGitHub(text_json(self.ROWS), commits=self.COMMITS if commits is None else commits)
+
+    def test_the_newest_revision_of_the_same_game_version_is_chosen(self):
+        self.assertEqual(tool.find_revision(self.github(), '3.8.0'), TEXT_REVISION)
+        self.assertEqual(tool.find_revision(self.github(), '3.9.0'), 'd' * 40)
+
+    def test_a_version_the_source_does_not_name_is_refused_not_guessed(self):
+        for version in ('3.7.0', '3.8.1', '13.8.0'):
+            with self.subTest(version), self.assertRaisesRegex(ValueError, 'нет версии ' + version):
+                tool.find_revision(self.github(), version)
+        for version in (None, '', '3.8', '3.8.0 ', 'GameVer 3.8.0', '../3.8.0'):
+            with self.subTest(version), self.assertRaises(ValueError):
+                tool.find_revision(self.github(), version)
+
+    def test_a_malformed_listing_is_refused(self):
+        good = self.COMMITS[1]
+        bad = {'not a list': {'sha': TEXT_REVISION}, 'entry': ['x'], 'short sha': listed(('c' * 39, good['commit']['message'])),
+               'no message': [{'sha': TEXT_REVISION, 'commit': {}}], 'no commit': [{'sha': TEXT_REVISION}],
+               'too long': [good] * 31}
+        for name, commits in bad.items():
+            with self.subTest(name), self.assertRaises(ValueError):
+                tool.find_revision(self.github(commits), '3.8.0')
+
+    def test_update_builds_the_table_once(self):
+        github = self.github()
+        first = tool.update(self.native, '3.8.0', opener=github)
+        self.assertTrue(first['changed'])
+        self.assertEqual(first['record']['revision'], TEXT_REVISION)
+        self.assertEqual(first['record']['repository'], 'Arikatsu/WutheringWaves_Data')
+        self.assertEqual(package.table_record(self.native), first['record'])
+        package.check_inputs(self.inputs)
+        again = self.github()
+        second = tool.update(self.native, '3.8.0', opener=again)
+        self.assertEqual(second, {'record': first['record'], 'changed': False})
+        self.assertEqual(again.urls, [TEXT_API + '/commits?path=Textmaps/en/multi_text/MultiText.json&per_page=30'])
+
+    def test_update_without_the_version_changes_nothing(self):
+        before = self.snapshot()
+        with self.assertRaises(ValueError):
+            tool.update(self.native, '3.7.0', opener=self.github())
+        self.assertEqual(self.snapshot(), before)

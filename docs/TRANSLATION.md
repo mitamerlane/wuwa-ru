@@ -11,6 +11,10 @@
 | Таблица текстов клиента `lang_multi_text.db` (её копия с русскими строками уходит в архив) | [Loping151/WWUIResourcesFull](https://github.com/Loping151/WWUIResourcesFull), `Text/ConfigDB/en/lang_multi_text.db` | `wuwaru/native_package.py` (`PINNED_TABLE`: ревизия, Git blob, SHA-256) |
 | Textmaps — строки по файлам для базы перевода | [Arikatsu/WutheringWaves_Data](https://github.com/Arikatsu/WutheringWaves_Data) | `research/public-text-sources.json` (ревизия, путь, размер и SHA-256 каждого файла) |
 
+После обновления игры на странице «Играть» появляется кнопка «Получить таблицу»: лаунчер собирает
+английскую таблицу новой версии из публичного текста игры (Arikatsu/WutheringWaves_Data) и просит
+принять версию на свой риск. Если текста этой версии ещё нет, таблица не меняется.
+
 Если файл не совпал с закреплённым хешем, он не используется. Новую ревизию таблицы
 можно взять командой `python -m tools.native_table fetch`; принятая версия игры
 действует только вместе с той таблицей, с которой её проверили.

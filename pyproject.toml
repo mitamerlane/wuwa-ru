@@ -1,6 +1,6 @@
 [project]
 name = "wuwa-russian-manager"
-version = "0.2.1"
+version = "0.2.2"
 description = "Offline-first Windows desktop application for WuWa Russian localization"
 requires-python = ">=3.12"
 license = {text = "GPL-3.0-or-later"}

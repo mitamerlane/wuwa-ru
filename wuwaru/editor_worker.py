@@ -299,6 +299,13 @@ class EditorJob(QThread):
             except ValueError as exc:
                 return {'error': str(exc)}
             return {'error': None}
+        if action == 'native-table':
+            import urllib.error
+            from . import table_fetch
+            try:
+                return table_fetch.update(native, args.get('game_version'))
+            except (urllib.error.URLError, TimeoutError) as exc:
+                raise ValueError(f'GitHub не ответил ({exc})') from exc
         if action == 'native-apply':
             request = Path(args['request'])
             code = native_helper.run_elevated(request)

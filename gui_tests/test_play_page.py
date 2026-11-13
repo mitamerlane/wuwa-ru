@@ -67,6 +67,7 @@ class PlayPageTests(FixtureCase):
         self.applied = False
         self.installed_bytes = PACKAGE['pak_bytes']
         self.operations = None
+        self.resources = None
         patches = [
             patch.object(GameDiscoveryService, 'discover', return_value={
                 'installations': [{'path': str(self.game), 'origins': ['steam_manifest'],
@@ -95,7 +96,7 @@ class PlayPageTests(FixtureCase):
         self.calls.append(('inspect', game, native, key, build_id))
         phase = Phase.READY if key == KEY and self.phase is Phase.NEEDS_REBUILD else self.phase
         return LaunchState(phase, reasons=['синтетика'], game=game, build_id=build_id,
-                           fingerprint=VERIFIED_FINGERPRINT, ours_in_mount=self.ours,
+                           fingerprint=VERIFIED_FINGERPRINT, ours_in_mount=self.ours, resources=self.resources,
                            installed_sha256=self.installed,
                            package=None if self.package is None else dict(self.package),
                            mount_sha256=hashlib.sha256(self.mount).hexdigest(),
@@ -344,7 +345,48 @@ class PlayPageTests(FixtureCase):
             text = question.call_args.args[2]
             self.assertIn('WWUIResourcesFull 30b665d7e783', text)
             self.assertEqual('новые официальные строки' in text, expected)
-            self.assertEqual('tools.native_table fetch' in text, expected)
+            self.assertEqual('«Получить таблицу»' in text, expected)
+
+    def test_version_changed_offers_the_table_of_this_game_version(self):
+        button = self.window.play_table_button
+        for phase in Phase:
+            self.show(phase)
+            self.assertFalse(button.isVisible(), phase)  # the game version is not known
+        self.resources = '3.8.0'
+        for phase in Phase:
+            self.show(phase)
+            self.assertEqual(button.isVisible(), phase is Phase.VERSION_CHANGED, phase)
+        self.show(Phase.VERSION_CHANGED)
+        self.assertIn('«Получить таблицу»', self.window.play_note.text())
+        record = dict(native_package.PINNED_TABLE, repository='Arikatsu/WutheringWaves_Data',
+                      revision='e' * 40, data_date='2026-11-10T05:39:55Z', source_blob='1' * 40)
+        self.calls.clear()
+        with patch('wuwaru.table_fetch.update', return_value={'record': record, 'changed': True}) as update:
+            button.click()
+            self.wait_idle()
+        update.assert_called_once_with(self.paths.native, '3.8.0')
+        self.assertIn('Таблица получена: WutheringWaves_Data eeeeeeeeeeee · 10.11.2026', self.window.play_status.text())
+        self.assertEqual([call[0] for call in self.calls], ['inspect'])  # nothing but a fresh look at the game
+        with patch('wuwaru.table_fetch.update', return_value={'record': record, 'changed': False}):
+            button.click()
+            self.wait_idle()
+        self.assertIn('Таблица уже этой версии', self.window.play_status.text())
+
+    def test_a_table_that_cannot_be_taken_says_why(self):
+        import urllib.error
+        self.resources = '3.9.0'
+        self.show(Phase.VERSION_CHANGED)
+        failures = ((ValueError('В публичном тексте игры пока нет версии 3.9.0'), 'пока нет версии 3.9.0'),
+                    (urllib.error.URLError('offline'), 'GitHub не ответил'))
+        for error, expected in failures:
+            with self.subTest(expected), patch('wuwaru.table_fetch.update', side_effect=error):
+                self.window.play_table_button.click()
+                self.wait_idle()
+                status = self.window.play_status.text()
+                self.assertIn('Таблица не получена', status)
+                self.assertIn(expected, status)
+                self.assertIs(self.window.play_phase, Phase.VERSION_CHANGED)
+                self.assertTrue(self.window.play_table_button.isEnabled())
 
     def test_remove_confirms_first(self):
         self.show(Phase.READY)

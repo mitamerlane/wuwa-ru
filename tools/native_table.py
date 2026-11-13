@@ -27,7 +27,7 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from wuwaru import native_package as package  # noqa: E402
-from wuwaru.table_fetch import (API, MAX_JSON, NAME, RAW, SHA, _json, _open, build, download,  # noqa: E402,F401
+from wuwaru.table_fetch import (API, MAX_JSON, NAME, RAW, SHA, _json, _open, build, download, find_revision, update,  # noqa: E402,F401
                                 fetch, locate, resolve)
 
 

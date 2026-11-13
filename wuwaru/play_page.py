@@ -70,6 +70,7 @@ class Buttons:
     tone: str = 'gold'               # 'gold' fills the play button, 'muted' is the dark variant
     alternative: str | None = None   # secondary action next to the play button
     recheck: bool = False
+    table: bool = False              # «Получить таблицу»: the game's version is known, its table is not in place
 
 
 @dataclass(frozen=True)
@@ -161,9 +162,11 @@ def buttons_for(state: LaunchState | None) -> Buttons:
         return Buttons('STEAM ОБНОВЛЯЕТ', '', False, 'muted', recheck=True)
     if phase is Phase.VERSION_CHANGED:
         accept = 'Принять версию на свой риск…' if state.fingerprint is not None else None
+        table = bool(state.resources)
         if state.ours_in_mount:  # our old-table line is still mounted: take it out before Steam starts
-            return Buttons('УБРАТЬ ПЕРЕВОД И ИГРАТЬ', '', can_remove(state), 'muted', accept, recheck=True)
-        return Buttons('ИГРАТЬ', 'без перевода', True, 'muted', accept, recheck=True)
+            return Buttons('УБРАТЬ ПЕРЕВОД И ИГРАТЬ', '', can_remove(state), 'muted', accept, recheck=True,
+                           table=table)
+        return Buttons('ИГРАТЬ', 'без перевода', True, 'muted', accept, recheck=True, table=table)
     if phase is Phase.NO_GAME:
         return Buttons('Указать папку игры…', '', True, 'muted', recheck=True)
     return Buttons('Подключить входы…', '', True, 'muted', recheck=True)
@@ -260,8 +263,8 @@ def panel_for(state: LaunchState | None, message: str = '') -> Panel:
                           'поэтому перевод выключен до пересборки.',
                      rows=(('Набор ресурсов', resources, TEXT), ('Список языковых пакетов', 'изменился', ALERT),
                            ('Наш пакет', *ours), ('Английская таблица', table_label(state.table), TEXT)),
-                     note='Нужна английская таблица новой версии: python -m tools.native_table fetch при закрытом '
-                          'приложении. С ней пакет пересоберётся, ручные правки сохранятся.')
+                     note='Нужна английская таблица новой версии: «Получить таблицу» возьмёт её из публичного '
+                          'текста игры. С ней пакет пересоберётся, ручные правки сохранятся.')
     if phase is Phase.GAME_RUNNING:
         return Panel('ИГРА ЗАПУЩЕНА', AMBER,
                      text='Пока игра или лаунчер открыты, перевод не подключается и не удаляется.', note=reasons)
@@ -718,6 +721,10 @@ class PlayPageMixin:
         self.play_recheck_button.setMinimumHeight(56)
         self.play_recheck_button.clicked.connect(lambda: self.refresh_play())
         buttons.addWidget(self.play_recheck_button)
+        self.play_table_button = CutButton('Получить таблицу')
+        self.play_table_button.setMinimumHeight(56)
+        self.play_table_button.clicked.connect(self.fetch_table)
+        buttons.addWidget(self.play_table_button)
         self.play_alt_button = CutButton()
         self.play_alt_button.setMinimumHeight(56)
         self.play_alt_button.clicked.connect(self.play_alternative)
@@ -797,6 +804,8 @@ class PlayPageMixin:
         self.play_alt_button.setEnabled(available)
         self.play_recheck_button.setVisible(spec.recheck or state is None)
         self.play_recheck_button.setEnabled(available)
+        self.play_table_button.setVisible(spec.table)
+        self.play_table_button.setEnabled(available)
         self.remove_button.setEnabled(available and can_remove(state))
         blocked = remove_block_reason(state)
         self.remove_button.setToolTip(blocked or 'Удалить перевод')
@@ -869,7 +878,8 @@ class PlayPageMixin:
 
     def _play_busy(self, title: str, subtitle: str = '') -> None:
         self.play_button.set_label(title, subtitle, 'gold' if self.play_button.tone == 'gold' else 'muted')
-        for widget in (self.play_button, self.play_alt_button, self.play_recheck_button, self.remove_button):
+        for widget in (self.play_button, self.play_alt_button, self.play_recheck_button, self.play_table_button,
+                       self.remove_button):
             widget.setEnabled(False)
 
     def _play_args(self, **extra) -> dict:
@@ -917,7 +927,8 @@ class PlayPageMixin:
 
     def play_failed(self, action: str, error: str) -> None:
         prefix = {'native-inspect': 'Проверка не удалась', 'native-build': 'Сборка не завершена',
-                  'native-apply': 'Помощник не запустился', 'native-inputs': 'Входы не подключены'}
+                  'native-apply': 'Помощник не запустился', 'native-inputs': 'Входы не подключены',
+                  'native-table': 'Таблица не получена'}
         self._timed_finish(ok=False)
         if action == 'native-build':
             error = build_error(error)
@@ -965,6 +976,24 @@ class PlayPageMixin:
         elif state.phase is Phase.VERSION_CHANGED:
             self.accept_version()
 
+    def fetch_table(self) -> None:
+        """«Получить таблицу»: the English table of this game version, built from the public text source."""
+        state = self.play_state
+        if self.job is not None or state is None or state.phase is not Phase.VERSION_CHANGED or not state.resources:
+            return
+        self._play_busy('ТАБЛИЦА…')
+        self.play_status.setText(f'Беру английскую таблицу версии {state.resources} из публичного текста игры, '
+                                 'около 50 МБ…')
+        self.task('native-table', dict(native=str(self.path_manager.native), game_version=state.resources),
+                  self._table_taken)
+
+    def _table_taken(self, result: dict) -> None:
+        label = table_label(result['record'])
+        self.refresh_play()
+        self.play_status.setText(f'Таблица получена: {label}. Прими версию на свой риск, и пакет соберётся на ней.'
+                                 if result['changed'] else
+                                 f'Таблица уже этой версии: {label}. Осталось принять версию на свой риск.')
+
     def accept_version(self) -> None:
         state = self.play_state
         if state is None or state.fingerprint is None:
@@ -978,8 +1007,7 @@ class PlayPageMixin:
             return
         stale = ('Эта таблица уже использовалась с прежней версией игры. Наш пакет подменяет таблицу строк '
                  'целиком, поэтому новые официальные строки этой версии останутся скрытыми или старыми. '
-                 'Сначала возьми свежую таблицу при закрытом приложении: '
-                 'python -m tools.native_table fetch --root <папка WuWaRussian>.\n\n' if reused else '')
+                 'Сначала возьми свежую таблицу кнопкой «Получить таблицу».\n\n' if reused else '')
         answer = QMessageBox.question(
             self, 'Принять версию на свой риск',
             'Эта версия игры не проверена. Совместимость перевода с ней и риск для аккаунта: UNKNOWN.\n\n'
